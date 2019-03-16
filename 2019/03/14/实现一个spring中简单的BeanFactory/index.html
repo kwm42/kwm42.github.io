@@ -6,15 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://kwm42.github.io">
-  <title>Tag: spring | KWM&#39;s BLOG</title>
+  <title>实现一个spring中简单的BeanFactory | KWM&#39;s BLOG</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="KWM&#39;s BLOG">
-<meta property="og:url" content="http://kwm42.github.io/tags/spring/index.html">
+  <meta name="description" content="实现一个spring中简单的BeanFactory 目前实现的这个 BeanFactory 可以读取 xml 配置文件，根据 属性值判断 Bean 的生成模式并且调用相应的方法生成 Bean 对象，还可以根据 property 元素节点给对应的属性赋值。">
+<meta name="keywords" content="spring">
+<meta property="og:type" content="article">
+<meta property="og:title" content="实现一个spring中简单的BeanFactory">
+<meta property="og:url" content="http://kwm42.github.io/2019/03/14/实现一个spring中简单的BeanFactory/index.html">
 <meta property="og:site_name" content="KWM&#39;s BLOG">
+<meta property="og:description" content="实现一个spring中简单的BeanFactory 目前实现的这个 BeanFactory 可以读取 xml 配置文件，根据 属性值判断 Bean 的生成模式并且调用相应的方法生成 Bean 对象，还可以根据 property 元素节点给对应的属性赋值。">
 <meta property="og:locale" content="zh_CN en_US">
+<meta property="og:updated_time" content="2019-03-16T03:06:11.901Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="KWM&#39;s BLOG">
+<meta name="twitter:title" content="实现一个spring中简单的BeanFactory">
+<meta name="twitter:description" content="实现一个spring中简单的BeanFactory 目前实现的这个 BeanFactory 可以读取 xml 配置文件，根据 属性值判断 Bean 的生成模式并且调用相应的方法生成 Bean 对象，还可以根据 property 元素节点给对应的属性赋值。">
   
     <link rel="alternative" href="/atom.xml" title="KWM&#39;s BLOG" type="application/atom+xml">
   
@@ -154,36 +159,118 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-实现一个spring中简单的BeanFactory" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2019" class="archive-year">2019</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/03/14/实现一个spring中简单的BeanFactory/" class="archive-article-date">
-  	<time datetime="2019-03-14T10:28:25.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-03-14</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/03/14/实现一个spring中简单的BeanFactory/">实现一个spring中简单的BeanFactory</a>
+    <h1 class="article-title" itemprop="name">
+      实现一个spring中简单的BeanFactory
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+        
+        <a href="/2019/03/14/实现一个spring中简单的BeanFactory/" class="archive-article-date">
+  	<time datetime="2019-03-14T10:28:25.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-03-14</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>实现一个spring中简单的BeanFactory</p>
+<p>目前实现的这个 BeanFactory 可以读取 xml 配置文件，根据 属性值判断 Bean 的生成模式并且调用相应的方法生成 Bean 对象，还可以根据 property 元素节点给对应的属性赋值。</p>
+<a id="more"></a>
+<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><ul>
+<li>首先读取并且解析 xml 文件，将解析后的能容存放在 Map 容器中。</li>
+<li>当调用GetBean 方法的时候，根据 id 获取对应的元素节点</li>
+<li>解析元素节点获得 property 参数以及 factory-method 等属性。</li>
+<li>利用 Java 的反射机制生成对应的类，实例化出对象。</li>
+<li>如果有相应的 property 属性就为属性赋值。</li>
+</ul>
+<h2 id="简单了解一下-Java-的反射机制"><a href="#简单了解一下-Java-的反射机制" class="headerlink" title="简单了解一下 Java 的反射机制"></a>简单了解一下 Java 的反射机制</h2><p>JVM 运行的时候回保存每个类的信息，我们可以通过这一点来获取保存某个类信息的数据。</p>
+<p>生成对应 class 的方法：</p>
+<ol>
+<li>生成 class 对象的方法</li>
+</ol>
+<ul>
+<li>Class.forName(“class name”) 根据全类名来生成具体的类信息，注意：是全类名，否则会找不到类。</li>
+<li>obj.getClass() 根据已有对象的 getClass 方法获取 class 对象，这是定义在 Object 中的基本方法。</li>
+<li>obj.class 直接获取 class</li>
+</ul>
+<ol start="2">
+<li><p>获取类的字段</p>
+<p>类的字段在 class 中是 Field 类型，我们通过 Field[] fields = cls.getDeclaredFields() 就可以获取到所有已经声明的字段，不论是否为私有属性。</p>
+</li>
+<li><p>获取类方法</p>
+<p>与字段类似，只是方法定义为 Method 类型，即 Method[] methods = cls.getDeclaredMethods()</p>
+</li>
+</ol>
+<h2 id="看看代码实现"><a href="#看看代码实现" class="headerlink" title="看看代码实现"></a>看看代码实现</h2><p>如下是 配置文件 Beans.xml 的内容</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">  &lt;bean id = <span class="string">"helloworld"</span> <span class="class"><span class="keyword">class</span> </span>= <span class="string">"test.entity.HelloWorld"</span>&gt;</span><br><span class="line">     &lt;property name = <span class="string">"message"</span> value = <span class="string">"Hello World [generated by constructor]!"</span>/&gt;</span><br><span class="line">  &lt;/bean&gt;</span><br><span class="line"></span><br><span class="line">&lt;bean id=<span class="string">"helloworld2"</span> <span class="class"><span class="keyword">class</span></span>=<span class="string">"test.StaticFactory"</span> factory-method=<span class="string">"getInstance"</span>&gt;</span><br><span class="line">	&lt;property name = <span class="string">"message"</span> value = <span class="string">"Hello World! [generated by static factory"</span>/&gt;</span><br><span class="line">&lt;/bean&gt;</span><br><span class="line"></span><br><span class="line">&lt;bean id="factory3" class="test.Factory3"&gt;&lt;/bean&gt;</span><br><span class="line"></span><br><span class="line">&lt;bean id=<span class="string">"helloworld3"</span> factory-bean=<span class="string">"factory3"</span> factory-method=<span class="string">"getInstance"</span>&gt;</span><br><span class="line">	&lt;property name = <span class="string">"message"</span> value = <span class="string">"Hello World! [generated by factory"</span>/&gt;</span><br><span class="line">&lt;/bean&gt;</span><br></pre></td></tr></table></figure>
+<p>可以看到 helloworld 是构造函数生成的 Bean，而 helloworld2 是通过静态工厂创建的 Bean 对象，helloworld3 是通过实例工厂生成的 Bean。</p>
+<p>实例工厂类以及静态工厂类的代码很简单，包含 getInstance 方法用来返回一个实例。</p>
+<p>其中实体类 HelloWorld 定义如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> test.entity;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HelloWorld</span> </span>&#123;</span><br><span class="line">	<span class="keyword">public</span> String message;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setMessage</span><span class="params">(String message)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.message = message;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">getMessage</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">"Your Message : "</span> + message);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="string">"HelloWorld [message="</span> + message + <span class="string">"]"</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>包含一个属性 message 以及对应的 get set 和 toString 方法，就是一个简单的 JavaBean，另外两个类的定义类似，只是类名不同。</p>
+<p>接下来就是 BeanFactory 的实现了，</p>
+<ol>
+<li>先看第一步-读取并解析 xml 配置文件</li>
+</ol>
+<p>类中包含一个 Map，id 作为 key，Element 作为 value，以便后面获取 Bean 的时候能够方便的根据 id 找到对应的属性。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">initialize</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="keyword">try</span> &#123;</span><br><span class="line">		SAXReader saxReader = <span class="keyword">new</span> SAXReader();</span><br><span class="line">		Document document = saxReader.read(<span class="keyword">new</span> File(XML_PATH));</span><br><span class="line">		Element root = document.getRootElement();</span><br><span class="line">		parseXml(root);</span><br><span class="line">	&#125; <span class="keyword">catch</span> (DocumentException e) &#123;</span><br><span class="line">		e.printStackTrace();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Traversing xml then keep into map</span></span><br><span class="line"><span class="comment"> * </span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> root</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">parseXml</span><span class="params">(Element root)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (map == <span class="keyword">null</span>) &#123;</span><br><span class="line">		map = <span class="keyword">new</span> HashMap&lt;String, Object&gt;();</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span> (Iterator i = root.elementIterator(); i.hasNext();) &#123;</span><br><span class="line">		Element element = (Element) i.next();</span><br><span class="line">        <span class="comment">// 遍历，如果设置了id属性就保存起来</span></span><br><span class="line">		<span class="keyword">if</span> (element.attribute(<span class="string">"id"</span>) != <span class="keyword">null</span>) &#123;</span><br><span class="line">			map.put(element.attribute(<span class="string">"id"</span>).getText(), element);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>getBean 方法</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * get bean use reflect according to bean name</span></span><br><span class="line"><span class="comment"> * </span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> beanName</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@throws</span> Exception</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@SuppressWarnings</span>(<span class="string">"unchecked"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> Object <span class="title">getBean</span><span class="params">(String beanName)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (map == <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> Exception(<span class="string">"map is null, please parse xml first or check your input"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    Element element = (Element) map.get(beanName);</span><br><span class="line">    Object object = <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">if</span> (element.attribute(<span class="string">"factory-bean"</span>) != <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="comment">// instance factory</span></span><br><span class="line">        object = generateBeanByFactory(</span><br><span class="line">            element.attribute(<span class="string">"factory-bean"</span>).getText(),</span><br><span class="line">            element.attribute(<span class="string">"factory-method"</span>).getText(), </span><br><span class="line">            element.elements(<span class="string">"property"</span>));</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (element.attribute(<span class="string">"factory-method"</span>) != <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="comment">// static factory</span></span><br><span class="line">        object = generateBeanByStaticFactory(</span><br><span class="line">            element.attribute(<span class="string">"class"</span>).getText(),</span><br><span class="line">            element.attribute(<span class="string">"factory-method"</span>).getText(),</span><br><span class="line">            element.elements(<span class="string">"property"</span>));</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">// constructor</span></span><br><span class="line">        object = generateBeanByConstructor(</span><br><span class="line">            element.attribute(<span class="string">"class"</span>).getText(), </span><br><span class="line">            element.elements(<span class="string">"property"</span>));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> object;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>首先检查 map 是否为空，如果没有初始化则需要先进行初始化操作，然后根据 id 去 map 中找到对应的元素，检查元素的属性，如果具有 factory-bean 属性则通过实例工厂模式生成，如果 factory-method 不为空，则通过静态工厂模式生成对应的 bean，最后如果两个属性都没有，那就通过构造方法生成。</p>
+<p>那么这三种生成模式分别是怎么实现的呢？</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * use constructor to generate a object,also set properties</span></span><br><span class="line"><span class="comment"> * </span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> className</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> elements</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> Object <span class="title">generateBeanByConstructor</span><span class="params">(String className, List&lt;Element&gt; properties)</span> </span>&#123;</span><br><span class="line">    Object object = <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        Class cls = Class.forName(className);</span><br><span class="line">        object = cls.newInstance();</span><br><span class="line">        object = setProperties(object, properties);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> object;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>首先根据反射获取类信息，然后创建一个实例，最后设置对应的属性并返回，看起来比较简单。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> Object <span class="title">generateBeanByStaticFactory</span><span class="params">(String className, String methodName, List&lt;Element&gt;... properties)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">    <span class="comment">// get factory-method</span></span><br><span class="line">    Method method = Class.forName(className).getMethod(methodName);</span><br><span class="line">    Object object = method.invoke(<span class="keyword">null</span>);</span><br><span class="line">    <span class="comment">// set prooperties</span></span><br><span class="line">    object = setProperties(object, properties);</span><br><span class="line">    <span class="keyword">return</span> object;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>静态工厂方法用 Method 直接生成静态工厂类的静态方法 getInstance，然后调用类的静态方法获取到对象，然后为对象设置对应的属性。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * </span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> factoryName: instance factory id in xml</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> methodName: factory method which to invoke to generate target bean</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> properties: optional,if there are property node in xml</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@throws</span> Exception</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> Object <span class="title">generateBeanByFactory</span><span class="params">(String factoryName, String methodName, List&lt;Element&gt;... properties)</span></span></span><br><span class="line"><span class="function">    <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">    <span class="comment">// get instance factory</span></span><br><span class="line">    Object factory = getBean(factoryName);</span><br><span class="line">    <span class="comment">// get factory-method</span></span><br><span class="line">    Method method = factory.getClass().getMethod(methodName);</span><br><span class="line">    Object object = method.invoke(factory);</span><br><span class="line">    <span class="comment">// set prooperties</span></span><br><span class="line">    object = setProperties(object, properties);</span><br><span class="line">    <span class="keyword">return</span> object;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>实例工厂的方法和静态工厂是类似的，只不过是多了一个工厂实例，即我们需要先获得实例工厂类，再调用实例工厂类的方法生成对应的对象，最后依然是为对象设置属性值。</p>
+<p>其中在这三个不同的生成方法中都使用了 setProperties，这是为对象的属性赋值的方法，具体实现如下 ：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * </span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> object: target object to set properties</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> properties: property list,it's optional, only access the first list</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@throws</span> Exception</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> Object <span class="title">setProperties</span><span class="params">(Object object, List&lt;Element&gt;... properties)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (properties == <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> object;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (Element property : properties[<span class="number">0</span>]) &#123;</span><br><span class="line">        String name = property.attribute(<span class="string">"name"</span>).getText();</span><br><span class="line">        String value = property.attribute(<span class="string">"value"</span>).getText();</span><br><span class="line">        Field[] fields = object.getClass().getDeclaredFields();</span><br><span class="line">        <span class="keyword">for</span> (Field field : fields) &#123;</span><br><span class="line">            <span class="comment">// search for field and set value</span></span><br><span class="line">            <span class="keyword">if</span> (field.getName().equals(name)) &#123;</span><br><span class="line">                field.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">                field.set(object, value);</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> object;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>object 是目标对象，而参数 properties 是可选的，因为有的 xml 文件并没有配置 property，这样我们就不需要为对象设置属性。</p>
+<p>最后来试试 BeanFactory 能不能生成对应的对象，在 main 函数中调用如下代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">MyBeanFactory factory=<span class="keyword">new</span> MyBeanFactory();</span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    Object helloWorld=factory.getBean(<span class="string">"helloworld"</span>);</span><br><span class="line">    Object helloWorld2=factory.getBean(<span class="string">"helloworld2"</span>);</span><br><span class="line">    Object helloWorld3=factory.getBean(<span class="string">"helloworld3"</span>);</span><br><span class="line">    System.out.println(helloWorld);</span><br><span class="line">    System.out.println(helloWorld2);</span><br><span class="line">    System.out.println(helloWorld3);</span><br><span class="line">&#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">    e.printStackTrace();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行结果如下：</p>
+<blockquote>
+<p>HelloWorld [message=Hello World [generated by constructor]!]<br>HelloWorld2 [message=Hello World! [generated by static factory]<br>HelloWorld3 [message=Hello World! [generated by factory]</p>
+</blockquote>
+<p>可以看到确实生成了我们想要的结果。结束</p>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
@@ -195,19 +282,115 @@
 		</ul>
 	</div>
 
-          
+      
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://kwm42.github.io/2019/03/14/实现一个spring中简单的BeanFactory/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
+  
+    <a href="/2019/03/15/注解的实现/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          注解的实现
+        
+      </div>
+    </a>
   
   
-    </div></section>
+    <a href="/2019/03/08/JDBCTemplate的简单实现/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">JDBCTemplate的简单实现</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+  
+  
   
 
-    
+  
+
+  
+
+  
 
 
           </div>
@@ -230,9 +413,9 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
-		isTag: true,
+		isTag: false,
 		isCategory: false,
 		open_in_new: false,
 		toc_hide_index: true,
