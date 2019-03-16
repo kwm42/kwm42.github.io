@@ -6,15 +6,23 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://kwm42.github.io">
-  <title>Archives | KWM&#39;s BLOG</title>
+  <title>单功能非线性流水线的调度方案[java] | KWM&#39;s BLOG</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="KWM&#39;s BLOG">
-<meta property="og:url" content="http://kwm42.github.io/archives/index.html">
+  <meta name="description" content="单功能非线性流水线的调度方案，使用 Java 语言实现的模拟流水线的调度程序。">
+<meta name="keywords" content="操作系统">
+<meta property="og:type" content="article">
+<meta property="og:title" content="单功能非线性流水线的调度方案[java]">
+<meta property="og:url" content="http://kwm42.github.io/2018/05/13/单功能非线性流水线的调度方案-java/index.html">
 <meta property="og:site_name" content="KWM&#39;s BLOG">
+<meta property="og:description" content="单功能非线性流水线的调度方案，使用 Java 语言实现的模拟流水线的调度程序。">
 <meta property="og:locale" content="zh_CN en_US">
+<meta property="og:image" content="https://github.com/kwm42/markdownPictures/raw/master/assembly_line/reservation_form.png">
+<meta property="og:image" content="https://github.com/kwm42/markdownPictures/raw/master/assembly_line/state_transition.png">
+<meta property="og:updated_time" content="2019-03-16T12:34:59.563Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="KWM&#39;s BLOG">
+<meta name="twitter:title" content="单功能非线性流水线的调度方案[java]">
+<meta name="twitter:description" content="单功能非线性流水线的调度方案，使用 Java 语言实现的模拟流水线的调度程序。">
+<meta name="twitter:image" content="https://github.com/kwm42/markdownPictures/raw/master/assembly_line/reservation_form.png">
   
     <link rel="alternative" href="/atom.xml" title="KWM&#39;s BLOG" type="application/atom+xml">
   
@@ -154,327 +162,239 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-单功能非线性流水线的调度方案-java" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2019" class="archive-year">2019</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/03/14/实现一个spring中简单的BeanFactory/" class="archive-article-date">
-  	<time datetime="2019-03-14T10:28:25.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-03-14</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/03/14/实现一个spring中简单的BeanFactory/">实现一个spring中简单的BeanFactory</a>
+    <h1 class="article-title" itemprop="name">
+      单功能非线性流水线的调度方案[java]
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+        
+        <a href="/2018/05/13/单功能非线性流水线的调度方案-java/" class="archive-article-date">
+  	<time datetime="2018-05-13T09:13:11.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-13</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>单功能非线性流水线的调度方案，使用 Java 语言实现的模拟流水线的调度程序。</p>
+<a id="more"></a>
+<h2 id="一-什么是单功能非线性流水线？"><a href="#一-什么是单功能非线性流水线？" class="headerlink" title="一 什么是单功能非线性流水线？"></a>一 什么是单功能非线性流水线？</h2><h3 id="1-预约表"><a href="#1-预约表" class="headerlink" title="1.预约表"></a>1.预约表</h3><p>如下图：</p>
+<p><img src="https://github.com/kwm42/markdownPictures/raw/master/assembly_line/reservation_form.png" alt="img"></p>
+<p>共有4个功能段 s1~s4 ，一条指令占用7个时间段。其中某个位置为X表示在该时间段某个功能段被占用，如 t=1 时 S1 段被占用，t=2 时功能段 S2 被占用，以此类推。</p>
+<h3 id="2-冲突向量"><a href="#2-冲突向量" class="headerlink" title="2.冲突向量"></a>2.冲突向量</h3><p>由该预约表可得到的初始冲突向量是「101010」，某位上为1表示禁止进入的时间间隔，例如 由右向左第二位为1，表示初始向量进入后间隔3个时间间隔不能流入新的指令，否则会产生冲突。</p>
+<h3 id="3-状态转移图"><a href="#3-状态转移图" class="headerlink" title="3.状态转移图"></a>3.状态转移图</h3><p>状态转移图就是由初始冲突向量经过计算得到新的冲突向量，从而进一步得到状态向量之间的转化，最后得到状态转移图。</p>
+<p>由上述预约表可以得到的状态转移图如下：</p>
+<p><img src="https://github.com/kwm42/markdownPictures/raw/master/assembly_line/state_transition.png" alt="img"></p>
+<p>以「101010」– 3 –&gt; 「101111」 为例，表示当前冲突向量为「101010」，经过 3 个时间间隔流入一条新的指令，此时将原先的冲突向量右移 3 位，然后和新的指令的禁止冲突向量（这里是「101010」）进行<strong>或</strong>运算，得到的新的冲突向量就是「101111」。</p>
+<p>状态转移图用邻接表的方式存储，这个例子得到的邻接表是</p>
+<p>{101010(+1)-&gt;111111、101010(+3)-&gt;101111、101010(+5)-&gt;101011、101010(+7)-&gt;101010}<br>{111111(+7)-&gt;101010}<br>{101111(+5)-&gt;101011、101111(+7)-&gt;101010}<br>{101011(+3)-&gt;101111、101011(+5)-&gt;101011、101011(+7)-&gt;101010}</p>
+<h3 id="4-调度方案"><a href="#4-调度方案" class="headerlink" title="4.调度方案"></a>4.调度方案</h3><p>由上图可得到的调度有许多种，以下表中的（1,7）这个方案为例，意思就是初始向量「101010」经过 1 个时间间隔流入一条新的指令后得到的新的冲突向量为「111111」，然后间隔 7 个时间间隔再流入新的指令后冲突向量变为「101010」，然后经过 1 个时间间隔再流入新的指令… 重复这个过程，我们可以知道每流入两条指令会需要 1+7 共 8 个时间间隔，所以当指令条数很多时，平均每条指令的等待时间是 4 。</p>
+<table>
+<thead>
+<tr>
+<th>调度方案</th>
+<th>平均延迟</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>（1,7）</td>
+<td>4</td>
+</tr>
+<tr>
+<td>（3,5）</td>
+<td>4</td>
+</tr>
+<tr>
+<td>(5,3)</td>
+<td>4</td>
+</tr>
+<tr>
+<td>…</td>
+<td>…</td>
+</tr>
+</tbody>
+</table>
+<h2 id="二-java程序实现流水线最优调度"><a href="#二-java程序实现流水线最优调度" class="headerlink" title="二 java程序实现流水线最优调度"></a>二 java程序实现流水线最优调度</h2><h3 id="1-冲突向量类"><a href="#1-冲突向量类" class="headerlink" title="1. 冲突向量类"></a>1. 冲突向量类</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 冲突向量类，记录状态转移图中的某一个冲突向量状态</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> kwm</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ConflictVector</span></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> stateNumber;</span><br><span class="line">	<span class="comment">/* 冲突向量*/</span></span><br><span class="line">	<span class="keyword">int</span> vector;</span><br><span class="line">	<span class="comment">/** 冲突向量长度*/</span></span><br><span class="line">	<span class="keyword">int</span> length;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 从预约表得到初始冲突向量</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> reservationForm 预约表，1表示占用功能段，0表示不占用</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	ConflictVector(<span class="keyword">int</span> [][]reservationForm)&#123;</span><br><span class="line">		stateNumber=<span class="number">0</span>;</span><br><span class="line">		vector=<span class="number">0</span>;</span><br><span class="line">		length=<span class="number">0</span>;</span><br><span class="line">		<span class="keyword">int</span> row=reservationForm.length,col=reservationForm[<span class="number">0</span>].length;</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;row;++i) &#123;</span><br><span class="line">			<span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>;j&lt;col;++j) &#123;</span><br><span class="line">				<span class="keyword">if</span>(reservationForm[i][j]==<span class="number">1</span>) &#123;</span><br><span class="line">					<span class="keyword">for</span>(<span class="keyword">int</span> k=j+<span class="number">1</span>;k&lt;col;++k) &#123;</span><br><span class="line">						<span class="comment">//计算禁止的时间间隔</span></span><br><span class="line">						vector|=(reservationForm[i][k]==<span class="number">1</span>?<span class="number">0x01</span>&lt;&lt;(k-j-<span class="number">1</span>):<span class="number">0</span>);</span><br><span class="line">						<span class="comment">//更新向量的长度</span></span><br><span class="line">						<span class="keyword">if</span>(reservationForm[i][k]==<span class="number">1</span>&amp;&amp;k-j&gt;length) length=k-j;</span><br><span class="line">					&#125;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 由初始冲突向量得到新的冲突向量</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> timeInterval 经过多少事件间隔又流入一条新的任务</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> originalVector 初始冲突向量</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> currentVector 当前冲突向量</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	ConflictVector(<span class="keyword">int</span> stateNumber,ConflictVector originalVector,ConflictVector currentVector,<span class="keyword">int</span> timeInterval)&#123;</span><br><span class="line">		<span class="keyword">this</span>.stateNumber=stateNumber;</span><br><span class="line">		<span class="keyword">this</span>.length=originalVector.length;</span><br><span class="line">		vector=(currentVector.getVector()&gt;&gt;timeInterval)|originalVector.getVector();</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">int</span> <span class="title">getVector</span><span class="params">()</span> </span>&#123;<span class="keyword">return</span> vector;&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">int</span> <span class="title">getLength</span><span class="params">()</span> </span>&#123;<span class="keyword">return</span> length;&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">int</span> <span class="title">getStateNumber</span><span class="params">()</span> </span>&#123;<span class="keyword">return</span> stateNumber;&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">print</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i=length-<span class="number">1</span>;i&gt;=<span class="number">0</span>;--i) &#123;</span><br><span class="line">			System.out.print((vector&gt;&gt;i)&amp;<span class="number">0x01</span>);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		String s=<span class="string">""</span>;</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i=length-<span class="number">1</span>;i&gt;=<span class="number">0</span>;--i) &#123;</span><br><span class="line">			s+=((vector&gt;&gt;i)&amp;<span class="number">0x01</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> s;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="2-状态转移图类"><a href="#2-状态转移图类" class="headerlink" title="2.状态转移图类"></a>2.状态转移图类</h3><p>这个类代码较多，所以只给出重要的代码。</p>
+<ul>
+<li><p>1 .根据初始冲突向量得到状态转移图。</p>
+<p>由初始冲突向量计算非禁止的时间间隔，得到下一个状态向量，如果新的状态向量没有出现过，新建一个节点，最开始的时候邻接表中只有一个节点即初始冲突向量「101010」，对每一个节点，都计算出由它可得到的下一状态量，直到得到所有节点和边。</p>
+</li>
+</ul>
+<p>算法描述如下：</p>
+<ul>
+<li>1 初始化邻接表，加入初始冲突状态量V0</li>
+<li>2 对表中某一个没有计算过的节点，计算由其出发的所有非禁止时间间隔可得到的下一状态量，如果该状态没有出现，添加一个新状态。</li>
+<li>3 如果表中所有所有节点都已经完成计算，结束，否则进行第二步。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 完成图G，画出状态转移图，邻接表存储</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">figureG</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		vectorArray.add(originalVector);</span><br><span class="line">		G.add(<span class="keyword">new</span> ArrayList&lt;Tuple&gt;());</span><br><span class="line">		<span class="keyword">int</span> length=originalVector.getLength();</span><br><span class="line">		<span class="keyword">int</span> currentVector;</span><br><span class="line">		<span class="keyword">int</span> newVector;</span><br><span class="line">		ConflictVector newConflictVector;</span><br><span class="line">		ConflictVector currentConflictVector;</span><br><span class="line">		</span><br><span class="line">		<span class="comment">//计算每个向量的邻接表</span></span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;vectorArray.size();++i) &#123;</span><br><span class="line">			currentConflictVector=vectorArray.get(i);</span><br><span class="line">			currentVector=currentConflictVector.getVector();</span><br><span class="line">			<span class="keyword">for</span>(<span class="keyword">int</span> k=<span class="number">1</span>;k&lt;=length;++k) &#123;</span><br><span class="line">				<span class="comment">//非禁止时间间隔</span></span><br><span class="line">				<span class="keyword">if</span>((currentVector&gt;&gt;(k-<span class="number">1</span>)&amp;<span class="number">0x01</span>)==<span class="number">0</span>) &#123;</span><br><span class="line">					newVector=(currentVector&gt;&gt;k)|originalVector.getVector();</span><br><span class="line">					<span class="comment">//新向量没有出现过，添加到向量数组</span></span><br><span class="line">					<span class="keyword">if</span>(getVectorNumber(newVector)==-<span class="number">1</span>)&#123;</span><br><span class="line">						newConflictVector=getNewConflictVector(vectorArray.size(),k,currentConflictVector);</span><br><span class="line">						vectorArray.add(newConflictVector);</span><br><span class="line">						G.add(<span class="keyword">new</span> ArrayList&lt;Tuple&gt;());</span><br><span class="line">					&#125;</span><br><span class="line">					<span class="comment">//添加邻接表</span></span><br><span class="line">					G.get(i).add(<span class="keyword">new</span> Tuple(k,getVectorNumber(newVector)));</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="comment">//添加恢复到初始向量的时间</span></span><br><span class="line">			G.get(i).add(<span class="keyword">new</span> Tuple(length+<span class="number">1</span>,originalVector.getStateNumber()));</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><ol>
+<li><p>根据状态转移图的邻接表得到所有的调度方案（即在一个有向图中搜索出所有的环）。</p>
+<p>我的思路是利用 <strong>DFS</strong> 遍历图，我这里利用了一个动态数组「record」记录路径，然后找到一条新的回路就记录下来，其中「avilableSchedule」是所有可用的调度方案。「visited」表示某个节点是否被访问过，如果之前被访问过了就表示遇到了环，就记录下来。</p>
+</li>
+</ol>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 搜索出图中所有的环</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">searchCircle</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">//visited 表示某个节点是否被访问过</span></span><br><span class="line">		<span class="keyword">boolean</span> visited []=<span class="keyword">new</span> <span class="keyword">boolean</span>[vectorArray.size()];</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">boolean</span> b:visited) &#123;b=<span class="keyword">false</span>;&#125;</span><br><span class="line">        <span class="comment">//记录路径</span></span><br><span class="line">		ArrayList&lt;Tuple&gt; record=<span class="keyword">new</span> ArrayList&lt;Tuple&gt;();</span><br><span class="line">		record.add(<span class="keyword">new</span> Tuple(<span class="number">0</span>,<span class="number">0</span>));</span><br><span class="line">		dfs(<span class="number">0</span>,record,visited);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 找出环并且记录路径</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> stateNumber 当前状态向量编号</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> record 路径的记录</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> visited 节点是否被访问过的标志</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">dfs</span><span class="params">(<span class="keyword">int</span> stateNumber,ArrayList&lt;Tuple&gt; record,<span class="keyword">boolean</span> visited[])</span> </span>&#123;</span><br><span class="line">		ArrayList&lt;Tuple&gt; al=G.get(stateNumber);</span><br><span class="line">		<span class="comment">//节点已经被访问过，即遇到了环</span></span><br><span class="line">		<span class="keyword">if</span>(visited[stateNumber]) &#123;</span><br><span class="line">			<span class="comment">//记录可行解</span></span><br><span class="line">			<span class="comment">//这个地方要添加一个record的复制，不能直接添加其引用</span></span><br><span class="line">			avilableSchedule.add(<span class="keyword">new</span> ArrayList&lt;Tuple&gt;(record));</span><br><span class="line">			<span class="keyword">return</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">for</span>(Tuple t:al) &#123;</span><br><span class="line">			visited[stateNumber]=<span class="keyword">true</span>;</span><br><span class="line">			record.add(t);</span><br><span class="line">			dfs(t.getNumber(),record,visited);</span><br><span class="line">			record.remove(record.size()-<span class="number">1</span>);</span><br><span class="line">			visited[stateNumber]=<span class="keyword">false</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><ol>
+<li>求出某种策略的实际效率，可以用「吞吐率」或者每条指令的「平均等待时间」来衡量</li>
+</ol>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 计算一种调度策略效率</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> plan 某种调度策略</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">double</span> <span class="title">figureThroughputRate</span><span class="params">(ArrayList&lt;Tuple&gt; plan)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">int</span> circleStart=<span class="number">0</span>,circleEnd=<span class="number">0</span>,circleTime=<span class="number">0</span>;</span><br><span class="line">		<span class="comment">//找出环的开始和结束位置,数量很小，直接遍历</span></span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;plan.size();++i) &#123;</span><br><span class="line">			<span class="keyword">for</span>(<span class="keyword">int</span> j=i+<span class="number">1</span>;j&lt;plan.size();++j) &#123;</span><br><span class="line">				<span class="keyword">if</span>(plan.get(i).stateNumber==plan.get(j).stateNumber) &#123;</span><br><span class="line">					circleStart=i;</span><br><span class="line">					circleEnd=j;</span><br><span class="line">					<span class="keyword">break</span>;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">int</span> repeatCount=circleEnd-circleStart;</span><br><span class="line">		<span class="comment">//计算一个循环的时间</span></span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i=circleStart+<span class="number">1</span>;i&lt;=circleEnd;++i) &#123;</span><br><span class="line">			circleTime+=plan.get(i).timeInterval;</span><br><span class="line">		&#125;</span><br><span class="line">		System.out.print(<span class="string">"当流入k条指令的时候，一条指令平均等待时间是"</span>);</span><br><span class="line">		</span><br><span class="line">		<span class="comment">//平均等待时间=[C+(k-d)*T/i]/k    T=(t1+t2+...ti)</span></span><br><span class="line">		<span class="comment">//k-d为循环状态个数，T/i为循环总时间/循环指令条数，C为循环之外的常数时间</span></span><br><span class="line">		String C=<span class="string">""</span>,T=<span class="string">""</span>;</span><br><span class="line">		<span class="keyword">if</span>(circleStart!=<span class="number">0</span>)&#123;</span><br><span class="line">			<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;=circleStart;++i) &#123;</span><br><span class="line">				C+=plan.get(i).timeInterval+<span class="string">"+"</span>;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i=circleStart+<span class="number">1</span>;i&lt;=circleEnd;++i) &#123;</span><br><span class="line">			<span class="keyword">if</span>(i==circleStart+<span class="number">1</span>) T+=plan.get(i).timeInterval;</span><br><span class="line">			<span class="keyword">else</span>               T+=<span class="string">"+"</span>+plan.get(i).timeInterval;</span><br><span class="line">		&#125;</span><br><span class="line">		System.out.println(<span class="string">"["</span>+C+<span class="string">"(k-"</span>+circleStart+<span class="string">")*"</span>+<span class="string">"("</span>+T+<span class="string">")"</span>+<span class="string">"/"</span>+repeatCount+<span class="string">"]/k"</span>);</span><br><span class="line">		System.out.println(<span class="string">"当k趋近无穷大时，每条指令平均等待时间是"</span>+(<span class="keyword">double</span>)circleTime/repeatCount);</span><br><span class="line">		<span class="keyword">return</span> (<span class="keyword">double</span>)circleTime/repeatCount;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="流水线类"><a href="#流水线类" class="headerlink" title="流水线类"></a>流水线类</h3><p> 它的功能就是读取预约表的内容，然后调用状态转移图的方法得到最优调度方案，比较简单。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 流水线类，包含预约表，冲突向量的状态转移图</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> kwm</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AssemblyLine</span> </span>&#123;</span><br><span class="line">	<span class="comment">/* 预约表，1表示占用，0表示不占用*/</span></span><br><span class="line">	<span class="keyword">int</span> [][] reservationForm;</span><br><span class="line">	<span class="comment">/** 状态转移图 */</span></span><br><span class="line">	StateTransition stateTransition;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 初始化预约表，计算出流水线状态转移图</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	AssemblyLine()&#123;</span><br><span class="line">		readReservationForm();</span><br><span class="line">		stateTransition=<span class="keyword">new</span> StateTransition(reservationForm);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="function">StateTransition <span class="title">getStateTransition</span><span class="params">()</span> </span>&#123;<span class="keyword">return</span> stateTransition;&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">printReservationForm</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">"预约表如下:"</span>);</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;reservationForm.length;++i) &#123;</span><br><span class="line">			<span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>;j&lt;reservationForm[i].length;++j) &#123;</span><br><span class="line">				System.out.print(reservationForm[i][j]+<span class="string">" "</span>);</span><br><span class="line">			&#125;</span><br><span class="line">			System.out.println(<span class="string">""</span>);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">printStateTransition</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		stateTransition.printG();</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">printSchedulePlan</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		stateTransition.printSchedulePlan();</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 从键盘读取预约表，</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">readReservationForm</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">int</span> col,raw;</span><br><span class="line">		System.out.print(<span class="string">"请输入预约表的功能段数（行数）和指令周期（列数）："</span>);</span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">			Scanner sc=<span class="keyword">new</span> Scanner(System.in);</span><br><span class="line">			raw=sc.nextInt();</span><br><span class="line">			col=sc.nextInt();</span><br><span class="line">			System.out.println(<span class="string">"请输入预约表："</span>);</span><br><span class="line">			reservationForm=<span class="keyword">new</span> <span class="keyword">int</span>[raw][col];</span><br><span class="line">			<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;raw;++i) &#123;</span><br><span class="line">				<span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>;j&lt;col;++j) &#123;</span><br><span class="line">					reservationForm[i][j]=sc.nextInt();</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">catch</span>(Exception e) &#123;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		<span class="comment">// TODO Auto-generated method stub</span></span><br><span class="line">		AssemblyLine al=<span class="keyword">new</span> AssemblyLine();</span><br><span class="line">		al.printReservationForm();</span><br><span class="line">		al.printStateTransition();</span><br><span class="line">		al.stateTransition.searchCircle();</span><br><span class="line">		al.printSchedulePlan();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">spring</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">操作系统</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/03/08/JDBCTemplate的简单实现/" class="archive-article-date">
-  	<time datetime="2019-03-08T11:51:29.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-03-08</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/03/08/JDBCTemplate的简单实现/">JDBCTemplate的简单实现</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/01/08/vue3-0跨域配置/" class="archive-article-date">
-  	<time datetime="2019-01-08T09:13:37.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-01-08</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/01/08/vue3-0跨域配置/">vue3.0跨域配置</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/01/02/2018总结/" class="archive-article-date">
-  	<time datetime="2019-01-02T09:11:17.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-01-02</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/01/02/2018总结/">2018总结</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">总结</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
       
-        </div></section>
+
       
+
       
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2018" class="archive-year">2018</a>
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/12/18/spring-boot问题记录/" class="archive-article-date">
-  	<time datetime="2018-12-18T09:12:22.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-12-18</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/12/18/spring-boot问题记录/">spring-boot问题记录</a>
-    </h1>
-  
+      </div>
+    </span>
+  </div>
+</div>
 
-        <div class="article-info info-on-right">
-          
-          
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://kwm42.github.io/2018/05/13/单功能非线性流水线的调度方案-java/" alt="微信分享二维码">
+    </div>
+</div>
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/11/16/Vue中json-server的使用/" class="archive-article-date">
-  	<time datetime="2018-11-16T03:21:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-11-16</time>
-</a>
+<nav id="article-nav">
+  
+    <a href="/2018/05/27/信号量与进程互斥/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          信号量与进程互斥
+        
+      </div>
+    </a>
+  
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
+        
+        
+    </div>
+</aside>
+
+
+
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/11/16/Vue中json-server的使用/">Vue中json-server的使用</a>
-    </h1>
+  
   
 
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/11/14/vuex基本使用/" class="archive-article-date">
-  	<time datetime="2018-11-14T01:12:45.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-11-14</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/11/14/vuex基本使用/">vuex基本使用</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/07/19/网络通信解析/" class="archive-article-date">
-  	<time datetime="2018-07-19T09:13:24.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-07-19</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/07/19/网络通信解析/">网络通信解析</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/06/07/Vue.js入门/" class="archive-article-date">
-  	<time datetime="2018-06-07T02:17:08.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-06-07</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/06/07/Vue.js入门/">Vue.js 入门</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/05/27/信号量与进程互斥/" class="archive-article-date">
-  	<time datetime="2018-05-27T09:12:53.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-27</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/05/27/信号量与进程互斥/">信号量与进程互斥</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
-
-    
-    <nav id="page-nav">
-      <span class="page-number current">1</span><a class="page-number" href="/archives/page/2/">2</a><a class="extend next" rel="next" href="/archives/page/2/">Next &raquo;</a>
-    </nav>
   
 
 
@@ -498,8 +418,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,
