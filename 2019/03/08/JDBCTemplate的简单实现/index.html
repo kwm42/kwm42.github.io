@@ -8,17 +8,17 @@
   <link rel="dns-prefetch" href="http://kwm42.github.io">
   <title>JDBCTemplate的简单实现 | KWM&#39;s BLOG</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="JDBCTemplate 的简单实现">
+  <meta name="description" content="JDBCTemplate 的简单实现，实现查询单个对象，list 查询，通用的 update 方法以及对象风格的插入。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="JDBCTemplate的简单实现">
 <meta property="og:url" content="http://kwm42.github.io/2019/03/08/JDBCTemplate的简单实现/index.html">
 <meta property="og:site_name" content="KWM&#39;s BLOG">
-<meta property="og:description" content="JDBCTemplate 的简单实现">
+<meta property="og:description" content="JDBCTemplate 的简单实现，实现查询单个对象，list 查询，通用的 update 方法以及对象风格的插入。">
 <meta property="og:locale" content="zh_CN en_US">
-<meta property="og:updated_time" content="2019-03-16T03:04:12.840Z">
+<meta property="og:updated_time" content="2019-03-16T11:24:19.390Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="JDBCTemplate的简单实现">
-<meta name="twitter:description" content="JDBCTemplate 的简单实现">
+<meta name="twitter:description" content="JDBCTemplate 的简单实现，实现查询单个对象，list 查询，通用的 update 方法以及对象风格的插入。">
   
     <link rel="alternative" href="/atom.xml" title="KWM&#39;s BLOG" type="application/atom+xml">
   
@@ -178,7 +178,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>JDBCTemplate 的简单实现</p>
+        <p>JDBCTemplate 的简单实现，实现查询单个对象，list 查询，通用的 update 方法以及对象风格的插入。</p>
 <a id="more"></a>
 <p>JDBCTemplate 可以做什么？</p>
 <p>日常我们写数据库代码的时候，要先创建数据库连接，再获取 statement，然后传入指定的 SQL 语句执行，如果是 select 语句，还要处理 resultSet 中的值，而在这一整个过程中步骤难免让人感到十分的繁琐，而且流程固定化，写起来麻烦又累，spring 为我们提供了 JDBCTemplate，可以简化数据库操作，我们自己也来实现一个简单的类似于 JDBCTemplate 的数据库操作。</p>

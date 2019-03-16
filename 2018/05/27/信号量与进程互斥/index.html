@@ -8,17 +8,17 @@
   <link rel="dns-prefetch" href="http://kwm42.github.io">
   <title>信号量与进程互斥 | KWM&#39;s BLOG</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="信号量与进程互斥信号量与进程互斥">
+  <meta name="description" content="信号量与进程互斥，信号量的原理与在进程之间的使用。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="信号量与进程互斥">
 <meta property="og:url" content="http://kwm42.github.io/2018/05/27/信号量与进程互斥/index.html">
 <meta property="og:site_name" content="KWM&#39;s BLOG">
-<meta property="og:description" content="信号量与进程互斥信号量与进程互斥">
+<meta property="og:description" content="信号量与进程互斥，信号量的原理与在进程之间的使用。">
 <meta property="og:locale" content="zh_CN en_US">
-<meta property="og:updated_time" content="2019-03-14T13:13:40.335Z">
+<meta property="og:updated_time" content="2019-03-16T11:22:14.052Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="信号量与进程互斥">
-<meta name="twitter:description" content="信号量与进程互斥信号量与进程互斥">
+<meta name="twitter:description" content="信号量与进程互斥，信号量的原理与在进程之间的使用。">
   
     <link rel="alternative" href="/atom.xml" title="KWM&#39;s BLOG" type="application/atom+xml">
   
@@ -178,7 +178,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="信号量与进程互斥"><a href="#信号量与进程互斥" class="headerlink" title="信号量与进程互斥"></a>信号量与进程互斥</h1><p>信号量与进程互斥</p>
+        <p>信号量与进程互斥，信号量的原理与在进程之间的使用。</p>
 <a id="more"></a>
 <h2 id="资源互斥"><a href="#资源互斥" class="headerlink" title="资源互斥"></a>资源互斥</h2><p> 当多个进程或线程使用同一个资源或者共享对象时可能产生冲突，从而导致他们所使用的资源状态发生异常，导致意料之外的结果。</p>
 <p> 举个简单的例子：<strong>小明</strong> 拥有100金币，现在有两个线程 p1 和 p2 ，他们的功能是修改小明的金币数量，他们的执行过程如下:</p>
@@ -227,9 +227,9 @@
 <p> 我在网上看到一个恰当的比喻，大概意思就是：想象这里有一个房子（即临界区或共享资源），房子里面有很多玩具，有一堆小盆友（进程或线程）想要进入房子里面玩玩具（进入临界区或使用共享资源），但是房子不够大只能容纳一部分小盆友，所以房子的管理员想了一个办法，即在门口放一个箱子，箱子里面有门票（信号量），拿到门票的小盆友可以进入房子（门票的数量就是信号量的大小），没有门票就在门口等里面的小盆友出来，小盆友出来时把门票放回箱子里面（使用完了之后释放资源），其他小盆友就可以拿门票进去了，这样就可以控制进入临界区的进程数量。</p>
 <h2 id="使用信号量"><a href="#使用信号量" class="headerlink" title="使用信号量"></a>使用信号量</h2><p> 还是上面的金币问题，我们现在使用信号量来解决这个问题。</p>
 <p> 定义信号量如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">struct semaphore&#123;</span><br><span class="line">    int count;</span><br><span class="line">    queueType queue;</span><br><span class="line">&#125;</span><br><span class="line">void semWait(semaphore s)&#123;</span><br><span class="line">    //有一个进程（线程）想要使用资源</span><br><span class="line">    s.count--;</span><br><span class="line">    if(s.count&lt;0)&#123;</span><br><span class="line">        //把当前进程插入等待队列</span><br><span class="line">        //阻塞当前进程</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">void semSignal(semaphore s)&#123;</span><br><span class="line">    //某个进程（线程）释放资源</span><br><span class="line">    s.count++;</span><br><span class="line">    if(s.count&lt;=0)&#123;</span><br><span class="line">        //将队列中的一个进程变成就绪态</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">semaphore</span>&#123;</span></span><br><span class="line">    <span class="keyword">int</span> count;</span><br><span class="line">    queueType <span class="built_in">queue</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">semWait</span><span class="params">(semaphore s)</span></span>&#123;</span><br><span class="line">    <span class="comment">//有一个进程（线程）想要使用资源</span></span><br><span class="line">    s.count--;</span><br><span class="line">    <span class="keyword">if</span>(s.count&lt;<span class="number">0</span>)&#123;</span><br><span class="line">        <span class="comment">//把当前进程插入等待队列</span></span><br><span class="line">        <span class="comment">//阻塞当前进程</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">semSignal</span><span class="params">(semaphore s)</span></span>&#123;</span><br><span class="line">    <span class="comment">//某个进程（线程）释放资源</span></span><br><span class="line">    s.count++;</span><br><span class="line">    <span class="keyword">if</span>(s.count&lt;=<span class="number">0</span>)&#123;</span><br><span class="line">        <span class="comment">//将队列中的一个进程变成就绪态</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p> 我们现在考虑有n个线程（p1 , p2 … pn）想要修改小明的金币，同一时间只允许一个线程工作，可以得到程序代码如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">//线程数</span><br><span class="line">int n;</span><br><span class="line">//信号量，允许一个线程</span><br><span class="line">semaphore s=1;</span><br><span class="line"></span><br><span class="line">void p()&#123;</span><br><span class="line">    while(true)&#123;</span><br><span class="line">        semWait(s);</span><br><span class="line">   	 	//临界区，修改小明的金币</span><br><span class="line">    	updateCoin(n);</span><br><span class="line">    	semSignal(s);</span><br><span class="line">    	//剩下部分</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void main()&#123;</span><br><span class="line">    compete(p1(),p2(),p3()....pn());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//线程数</span></span><br><span class="line"><span class="keyword">int</span> n;</span><br><span class="line"><span class="comment">//信号量，允许一个线程</span></span><br><span class="line">semaphore s=<span class="number">1</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">p</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">while</span>(<span class="literal">true</span>)&#123;</span><br><span class="line">        semWait(s);</span><br><span class="line">   	 	<span class="comment">//临界区，修改小明的金币</span></span><br><span class="line">    	updateCoin(n);</span><br><span class="line">    	semSignal(s);</span><br><span class="line">    	<span class="comment">//剩下部分</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    compete(p1(),p2(),p3()....pn());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p> 这样在同一时间只有一个线程可以修改金币，其他线程必须等待当前线程完成工作退出临界区。</p>
 <ul>
 <li>s.count &gt;= 0 : 此时表示可以执行不必被阻塞的进程数</li>
@@ -332,7 +332,7 @@
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          入门
+          Vue.js 入门
         
       </div>
     </a>
