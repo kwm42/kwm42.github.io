@@ -6,15 +6,24 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://kwm42.github.io">
-  <title>Archives | KWM&#39;s BLOG</title>
+  <title>JavaScript中的原型是什么 | KWM&#39;s BLOG</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="KWM&#39;s BLOG">
-<meta property="og:url" content="http://kwm42.github.io/archives/page/2/index.html">
+  <meta name="description" content="JavaScript 中的 prototype 以及 __proto__  ，两者之间有什么不同？如何理解函数对象及原型链？">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JavaScript中的原型是什么">
+<meta property="og:url" content="http://kwm42.github.io/2019/03/31/JavaScript中的原型是什么/index.html">
 <meta property="og:site_name" content="KWM&#39;s BLOG">
+<meta property="og:description" content="JavaScript 中的 prototype 以及 __proto__  ，两者之间有什么不同？如何理解函数对象及原型链？">
 <meta property="og:locale" content="zh_CN en_US">
+<meta property="og:image" content="http://kwm42.github.io/2019/03/31/images/js中原型是什么/Snipaste_2019-03-31_23-39-24.png">
+<meta property="og:image" content="http://kwm42.github.io/2019/03/31/images/js中原型是什么/Snipaste_2019-03-31_23-43-40.png">
+<meta property="og:image" content="http://kwm42.github.io/2019/03/31/images/js中原型是什么/Snipaste_2019-03-31_23-59-53.png">
+<meta property="og:image" content="https://images0.cnblogs.com/blog/349217/201308/27224151-5a1aff0645604df58e40abc919bc836d.png">
+<meta property="og:updated_time" content="2019-03-31T16:33:09.103Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="KWM&#39;s BLOG">
+<meta name="twitter:title" content="JavaScript中的原型是什么">
+<meta name="twitter:description" content="JavaScript 中的 prototype 以及 __proto__  ，两者之间有什么不同？如何理解函数对象及原型链？">
+<meta name="twitter:image" content="http://kwm42.github.io/2019/03/31/images/js中原型是什么/Snipaste_2019-03-31_23-39-24.png">
   
     <link rel="alternative" href="/atom.xml" title="KWM&#39;s BLOG" type="application/atom+xml">
   
@@ -154,90 +163,195 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-JavaScript中的原型是什么" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2018" class="archive-year">2018</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/05/27/信号量与进程互斥/" class="archive-article-date">
-  	<time datetime="2018-05-27T09:12:53.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-27</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/05/27/信号量与进程互斥/">信号量与进程互斥</a>
+    <h1 class="article-title" itemprop="name">
+      JavaScript中的原型是什么
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/05/13/单功能非线性流水线的调度方案-java/" class="archive-article-date">
-  	<time datetime="2018-05-13T09:13:11.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-13</time>
+        
+        <a href="/2019/03/31/JavaScript中的原型是什么/" class="archive-article-date">
+  	<time datetime="2019-03-31T13:33:17.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-03-31</time>
 </a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>JavaScript 中的 prototype 以及 __proto__  ，两者之间有什么不同？如何理解函数对象及原型链？</p>
+<a id="more"></a>
+<h2 id="函数对象"><a href="#函数对象" class="headerlink" title="函数对象"></a>函数对象</h2><p>首先说说什么是函数对象，我的理解是：在 js 中一切皆对象，例如 </p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Object</span></span><br><span class="line"><span class="keyword">var</span> o=&#123;</span><br><span class="line">    name:<span class="string">'lily'</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// Function</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>)</span>&#123;&#125;</span><br><span class="line"><span class="comment">// Number</span></span><br><span class="line"><span class="keyword">var</span> num=<span class="keyword">new</span> <span class="built_in">Number</span>(<span class="number">1</span>)</span><br><span class="line"><span class="comment">// String</span></span><br><span class="line"><span class="keyword">var</span> s=<span class="keyword">new</span> <span class="built_in">String</span>(<span class="string">'hello world'</span>)</span><br></pre></td></tr></table></figure>
+<p>注意，像 <strong>100</strong>、<strong>‘hello world’</strong> 这样的字面值常量是不属于对象的，就仅仅是数值而已</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">s <span class="keyword">instanceof</span> <span class="built_in">String</span> </span><br><span class="line">&gt;&gt; <span class="literal">true</span></span><br><span class="line">o <span class="keyword">instanceof</span> <span class="built_in">Object</span></span><br><span class="line">&gt;&gt; <span class="literal">true</span></span><br><span class="line">foo <span class="keyword">instanceof</span> <span class="built_in">Function</span></span><br><span class="line">&gt;&gt; <span class="literal">true</span></span><br><span class="line"><span class="built_in">Function</span> <span class="keyword">instanceof</span> <span class="built_in">Object</span></span><br><span class="line">&gt;&gt; <span class="literal">true</span></span><br><span class="line"><span class="built_in">String</span> <span class="keyword">instanceof</span> <span class="built_in">Object</span></span><br><span class="line">&gt;&gt; <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+<p>由上我们可以得出函数是属于 Function 对象的，而 Function 又是属于 Object 的，所以函数也是对象，这点和 java 是非常不同的，这就搞得我刚开始接触 js 的时候很不理解，因此我们可以在函数内部写这样的语句：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.prop=<span class="string">'prop'</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> f=<span class="keyword">new</span> foo()</span><br><span class="line"><span class="built_in">console</span>.log(f.prop) <span class="comment">// 'prop'</span></span><br></pre></td></tr></table></figure>
+<p>当我们像上面这样调用 foo 的时候，相当于 foo 作为构造函数，那么此时函数内的 this 指向的是新创建的对象 f ，如果我们直接调用 <figure class="highlight plain"><figcaption><span>的话，那么此时 this 指向的是window 对象，除此之外，如果是通过对象调用，那么这时候 this 指向调用的这个对象</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">## prototype 和 \_\_proto\_\_</span><br><span class="line"></span><br><span class="line">先来看看下面的例子会输出什么:</span><br><span class="line"></span><br><span class="line">```javascript</span><br><span class="line">function foo() &#123;</span><br><span class="line">    this.prop = &apos;prop&apos;</span><br><span class="line">&#125;</span><br><span class="line">var f = new foo()</span><br><span class="line"></span><br><span class="line">console.log(foo.prototype)</span><br><span class="line">console.log(f.__proto__)</span><br><span class="line">console.log(foo.prototype.__proto__)</span><br></pre></td></tr></table></figure></p>
+<p><img src="../images/js中原型是什么/Snipaste_2019-03-31_23-39-24.png" alt></p>
+<p>再来看看 Object.prototype 是什么：</p>
+<p><img src="../images/js中原型是什么/Snipaste_2019-03-31_23-43-40.png" alt></p>
+<p>我们发现他和 foo.prototype.__proto__ 是相同的</p>
+<p>这里借用 MDN 上的一段描述</p>
+<blockquote>
+<p>当谈到继承时，JavaScript 只有一种结构：对象。每个实例对象（ object ）都有一个私有属性（称之为 <strong>proto</strong> ）指向它的原型对象（ <strong>prototype</strong> ）。该原型对象也有一个自己的原型对象( <strong>proto</strong> ) ，层层向上直到一个对象的原型对象为 <code>null</code>。根据定义，<code>null</code> 没有原型，并作为这个<strong>原型链</strong>中的最后一个环节。</p>
+</blockquote>
+<p>简单分析一下，foo.prototype 和 f.__proto__  是相同的，因为对象实例的 __proto__ 属性指向的是其构造函数的原型，在这里 f 的构造函数是 foo ，因为 f 是通过 foo() new 出来的，所以 f 的构造函数就是 foo ，因此 f 的__proto__ 属性就是构造函数的原型。</p>
+<p>我们发现一件很有意思的事情，如下图，我们知道 foo 的原型是一个对象，对象会有构造函数，而构造函数是一个函数又有原型，这个构造函数就是 foo ，于是乎原型的构造函数的原型又指回了foo，即</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">foo.prototype.constructor.prototype==foo.prototype</span><br><span class="line">&gt;&gt; <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+<p><img src="../images/js中原型是什么/Snipaste_2019-03-31_23-59-53.png" alt></p>
+<p>借用网络上的一张图：</p>
+<p><img src="https://images0.cnblogs.com/blog/349217/201308/27224151-5a1aff0645604df58e40abc919bc836d.png" alt></p>
+<p>从上面的图中可以看出两个 person 实例都指向了其构造函数 Person 的原型，那么这里就可以讲讲原型链了，我们也写一下这个结构，就像这样</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Person</span>(<span class="params">name</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.name=name</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> person1=<span class="keyword">new</span> Person(<span class="string">'Byron'</span>)</span><br><span class="line"><span class="keyword">var</span> person2=<span class="keyword">new</span> Person(<span class="string">'Frank'</span>)</span><br></pre></td></tr></table></figure>
+<p>如果现在我们想要对 Person 修改一下，给其新增一个方法 sayHello()，我们可能会这么写：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">person1.sayHello=<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'Hello, I am '</span>+<span class="keyword">this</span>.name)</span><br><span class="line">&#125;</span><br><span class="line">person2.sayHello=<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'Hello, I am '</span>+<span class="keyword">this</span>.name)</span><br><span class="line">&#125;</span><br><span class="line">person1.sayHello()</span><br><span class="line">person2.sayHello()</span><br><span class="line"><span class="comment">/*******************output**********************/</span></span><br><span class="line">Hello, I am Byron</span><br><span class="line">Hello, I am Frank</span><br></pre></td></tr></table></figure>
+<p>想象一下如果我们有很多这种对象，每个都写一遍肯定不行，如果我们采用原型的做法可以向下面这样：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Person.prototype.sayHello=<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'Hello I am '</span>+<span class="keyword">this</span>.name)</span><br><span class="line">&#125;</span><br><span class="line">person1.sayHello()</span><br><span class="line">person2.sayHello()</span><br><span class="line"><span class="comment">/*******************output**********************/</span></span><br><span class="line">Hello, I am Byron</span><br><span class="line">Hello, I am Frank</span><br></pre></td></tr></table></figure>
+<p>这里我们定义了Person 原型对象中的 sayHello 为一个函数，那么为什么在 person 实例中可以调用到这个方法呢？我们看看两种方式的差别</p>
+<ul>
+<li><p>第一种写法</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Person.prototype =&gt;</span><br><span class="line">	&#123;<span class="attr">constructor</span>: ƒ&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">person1 =&gt;</span><br><span class="line">	Person &#123;<span class="attr">name</span>: <span class="string">"Byron"</span>, <span class="attr">sayHello</span>: ƒ&#125;</span><br><span class="line">	name: <span class="string">"Byron"</span></span><br><span class="line">	sayHello: ƒ ()</span><br><span class="line">	__proto__: <span class="built_in">Object</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>原型写法</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Person.prototype =&gt;</span><br><span class="line">	&#123;<span class="attr">sayHello</span>: ƒ, <span class="attr">constructor</span>: ƒ&#125;</span><br><span class="line">	sayHello: ƒ ()</span><br><span class="line">	<span class="keyword">constructor</span>: ƒ Person(name)</span><br><span class="line">	__proto__: Object</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">person1 =&gt;</span><br><span class="line">	Person &#123;<span class="attr">name</span>: <span class="string">"Byron"</span>&#125;</span><br><span class="line">	name: <span class="string">"Byron"</span></span><br><span class="line">	__proto__: <span class="built_in">Object</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>不知道大家看出来区别了吗，第一种写法的 sayHello 是写在实例对象中的，也就是说作为对象的一个属性存在，而原型写法是存在 Person 的原型中的，还记得我们上面说过 person 实例的 __proto__ 属性指向的是构造函数的 prototype，也就是说 person 实例的原型就是 Person 方法的原型，当我们调用 sayHello 时，会先在对象中找，如果没找到，就到它的原型，也就是 Person 方法的原型中找，而这就是我们刚刚定义 sayHello 方法的地方，因此会调用 sayHello 方法输出。</p>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
         </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/05/13/单功能非线性流水线的调度方案-java/">单功能非线性流水线的调度方案[java]</a>
-    </h1>
-  
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">操作系统</a>
-        		</li>
-      		
-		</ul>
-	</div>
+      
 
-          
-
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://kwm42.github.io/2019/03/31/JavaScript中的原型是什么/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
   
   
-    </div></section>
+    <a href="/2019/03/14/实现一个spring中简单的BeanFactory/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">实现一个spring中简单的BeanFactory</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+  
+  
   
 
-    
-    <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/archives/">&laquo; Prev</a><a class="page-number" href="/archives/">1</a><span class="page-number current">2</span>
-    </nav>
+  
+
+  
+
   
 
 
@@ -261,8 +375,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,
