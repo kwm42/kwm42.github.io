@@ -15,15 +15,15 @@
 <meta property="og:site_name" content="KWM&#39;s BLOG">
 <meta property="og:description" content="JavaScript 中的 prototype 以及 __proto__  ，两者之间有什么不同？如何理解函数对象及原型链？">
 <meta property="og:locale" content="zh_CN en_US">
-<meta property="og:image" content="http://kwm42.github.io/2019/03/31/images/js中原型是什么/Snipaste_2019-03-31_23-39-24.png">
-<meta property="og:image" content="http://kwm42.github.io/2019/03/31/images/js中原型是什么/Snipaste_2019-03-31_23-43-40.png">
+<meta property="og:image" content="https://github.com/kwm42/markdownPictures/raw/master/20190331/Snipaste_2019-03-31_23-39-24.png">
+<meta property="og:image" content="https://github.com/kwm42/markdownPictures/raw/master/20190331/Snipaste_2019-03-31_23-43-40.png">
 <meta property="og:image" content="http://kwm42.github.io/2019/03/31/images/js中原型是什么/Snipaste_2019-03-31_23-59-53.png">
 <meta property="og:image" content="https://images0.cnblogs.com/blog/349217/201308/27224151-5a1aff0645604df58e40abc919bc836d.png">
-<meta property="og:updated_time" content="2019-03-31T16:33:09.103Z">
+<meta property="og:updated_time" content="2019-04-01T02:46:35.534Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="JavaScript中的原型是什么">
 <meta name="twitter:description" content="JavaScript 中的 prototype 以及 __proto__  ，两者之间有什么不同？如何理解函数对象及原型链？">
-<meta name="twitter:image" content="http://kwm42.github.io/2019/03/31/images/js中原型是什么/Snipaste_2019-03-31_23-39-24.png">
+<meta name="twitter:image" content="https://github.com/kwm42/markdownPictures/raw/master/20190331/Snipaste_2019-03-31_23-39-24.png">
   
     <link rel="alternative" href="/atom.xml" title="KWM&#39;s BLOG" type="application/atom+xml">
   
@@ -192,9 +192,9 @@
 <p>由上我们可以得出函数是属于 Function 对象的，而 Function 又是属于 Object 的，所以函数也是对象，这点和 java 是非常不同的，这就搞得我刚开始接触 js 的时候很不理解，因此我们可以在函数内部写这样的语句：</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.prop=<span class="string">'prop'</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> f=<span class="keyword">new</span> foo()</span><br><span class="line"><span class="built_in">console</span>.log(f.prop) <span class="comment">// 'prop'</span></span><br></pre></td></tr></table></figure>
 <p>当我们像上面这样调用 foo 的时候，相当于 foo 作为构造函数，那么此时函数内的 this 指向的是新创建的对象 f ，如果我们直接调用 <figure class="highlight plain"><figcaption><span>的话，那么此时 this 指向的是window 对象，除此之外，如果是通过对象调用，那么这时候 this 指向调用的这个对象</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">## prototype 和 \_\_proto\_\_</span><br><span class="line"></span><br><span class="line">先来看看下面的例子会输出什么:</span><br><span class="line"></span><br><span class="line">```javascript</span><br><span class="line">function foo() &#123;</span><br><span class="line">    this.prop = &apos;prop&apos;</span><br><span class="line">&#125;</span><br><span class="line">var f = new foo()</span><br><span class="line"></span><br><span class="line">console.log(foo.prototype)</span><br><span class="line">console.log(f.__proto__)</span><br><span class="line">console.log(foo.prototype.__proto__)</span><br></pre></td></tr></table></figure></p>
-<p><img src="../images/js中原型是什么/Snipaste_2019-03-31_23-39-24.png" alt></p>
+<p><img src="https://github.com/kwm42/markdownPictures/raw/master/20190331/Snipaste_2019-03-31_23-39-24.png" alt></p>
 <p>再来看看 Object.prototype 是什么：</p>
-<p><img src="../images/js中原型是什么/Snipaste_2019-03-31_23-43-40.png" alt></p>
+<p><img src="https://github.com/kwm42/markdownPictures/raw/master/20190331/Snipaste_2019-03-31_23-43-40.png" alt></p>
 <p>我们发现他和 foo.prototype.__proto__ 是相同的</p>
 <p>这里借用 MDN 上的一段描述</p>
 <blockquote>
@@ -224,6 +224,20 @@
 </li>
 </ul>
 <p>不知道大家看出来区别了吗，第一种写法的 sayHello 是写在实例对象中的，也就是说作为对象的一个属性存在，而原型写法是存在 Person 的原型中的，还记得我们上面说过 person 实例的 __proto__ 属性指向的是构造函数的 prototype，也就是说 person 实例的原型就是 Person 方法的原型，当我们调用 sayHello 时，会先在对象中找，如果没找到，就到它的原型，也就是 Person 方法的原型中找，而这就是我们刚刚定义 sayHello 方法的地方，因此会调用 sayHello 方法输出。</p>
+<p>在上述的第一种写法中，每个对象都有一个 sayHello 方法，也就是说这个方法是属于各自对象的，我们可以这样验证一下</p>
+<blockquote>
+<p>person1.sayHello==person2.sayHello </p>
+<p>>> false</p>
+</blockquote>
+<p>说明他们的 sayHello 是两个不同的方法，而原型写法中输出是这样的</p>
+<blockquote>
+<p>person1.sayHello==person2.sayHello </p>
+<p>>> true</p>
+<p>person1.sayHello==Person.prototype.sayHello </p>
+<p>>> true</p>
+</blockquote>
+<p>这就说明 person1 和 person2 的sayHello 以及原型中的 sayHello 方法都是相同的，因此如果此时我们要修改 sayHello，那么只要修改原型中的方法，所有通过原型构造出来的对象都会同步修改，因此我的理解是</p>
+<p><strong>所有相同构造函数构造的对象的原型都指向一个 prototype 对象，因此在 prototype 中定义的方法，属性等会被所有对象所共享，如果需要为所有对象定义一个相同功能的方法，那么应该在原型中定义，js 在查找对象的属性以及方法时会先在对象本身中查找，如果没有找到，那么就到它的原型中找，如果还没有，就继续原型的原型查找，直到发现目标方法或者原型为 null 时就停止了。</strong></p>
 
       
 
