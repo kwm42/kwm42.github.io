@@ -6,15 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://kwm42.github.io">
-  <title>Tag: spring | KWM&#39;s BLOG</title>
+  <title>用vue.js做前端权限校验 | KWM&#39;s BLOG</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="KWM&#39;s BLOG">
-<meta property="og:url" content="http://kwm42.github.io/tags/spring/index.html">
+  <meta name="description" content="前端权限控制怎么做？vue.js 的权限控制怎么做？">
+<meta name="keywords" content="vue 前端">
+<meta property="og:type" content="article">
+<meta property="og:title" content="用vue.js做前端权限校验">
+<meta property="og:url" content="http://kwm42.github.io/2019/04/23/用vue-js做前端权限校验/index.html">
 <meta property="og:site_name" content="KWM&#39;s BLOG">
+<meta property="og:description" content="前端权限控制怎么做？vue.js 的权限控制怎么做？">
 <meta property="og:locale" content="zh_CN en_US">
+<meta property="og:updated_time" content="2019-04-24T02:52:51.970Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="KWM&#39;s BLOG">
+<meta name="twitter:title" content="用vue.js做前端权限校验">
+<meta name="twitter:description" content="前端权限控制怎么做？vue.js 的权限控制怎么做？">
   
     <link rel="alternative" href="/atom.xml" title="KWM&#39;s BLOG" type="application/atom+xml">
   
@@ -146,60 +151,198 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-用vue-js做前端权限校验" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2019" class="archive-year">2019</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/03/14/实现一个spring中简单的BeanFactory/" class="archive-article-date">
-  	<time datetime="2019-03-14T10:28:25.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-03-14</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/03/14/实现一个spring中简单的BeanFactory/">实现一个spring中简单的BeanFactory</a>
+    <h1 class="article-title" itemprop="name">
+      用vue.js做前端权限校验
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+        
+        <a href="/2019/04/23/用vue-js做前端权限校验/" class="archive-article-date">
+  	<time datetime="2019-04-23T11:05:07.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-04-23</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>前端权限控制怎么做？vue.js 的权限控制怎么做？</p>
+<a id="more"></a>
+<h1 id="为什么要做权限控制？"><a href="#为什么要做权限控制？" class="headerlink" title="为什么要做权限控制？"></a>为什么要做权限控制？</h1><p>最近在做一个课程设计，是一个学校的物业管理系统，其中后台管理有两个角色，一个是超级管理员，一个是普通管理员，两者拥有的权限是不一样的，所以我们要限制他们各自可以访问的页面以及操作。</p>
+<h1 id="初步想法"><a href="#初步想法" class="headerlink" title="初步想法"></a>初步想法</h1><p>我们在前端写一个角色-路由对应表，</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">[</span><br><span class="line">    &#123;</span><br><span class="line">        path: <span class="string">'/login'</span>,</span><br><span class="line">        name: <span class="string">'login'</span>,</span><br><span class="line">        component: Login</span><br><span class="line">    &#125;, </span><br><span class="line">    &#123;</span><br><span class="line">        path: <span class="string">'/'</span>,</span><br><span class="line">        name: <span class="string">'root'</span>,</span><br><span class="line">        hidden: <span class="literal">true</span>,</span><br><span class="line">        component: Home,</span><br><span class="line">        roles:[<span class="string">'admin'</span>]</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">        path:<span class="string">'/permission'</span>,</span><br><span class="line">        name:<span class="string">'permission'</span>,</span><br><span class="line">        component:Permission,</span><br><span class="line">        roles:[<span class="string">'super'</span>]</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">        path: <span class="string">'*'</span>,</span><br><span class="line">        hidden: <span class="literal">true</span>,</span><br><span class="line">        component: Error404,</span><br><span class="line">    &#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<p>在每次路由跳转的时候判断当前的角色是否有权限可以访问当前页面，我们可以再 vue-router 的 beforeEach 方法中判断是否有权访问当前页面</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">router.beforeEach(<span class="function">(<span class="params">to, <span class="keyword">from</span>, next</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> role = store.state.role</span><br><span class="line">    <span class="comment">// 获取目标路由的信息，其中包含那些角色可以访问</span></span><br><span class="line">    <span class="keyword">let</span> router=getRouter(to.path)</span><br><span class="line">    <span class="comment">// 有权限</span></span><br><span class="line">    <span class="keyword">if</span>(router.roles.include(role))&#123;</span><br><span class="line">        next()</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="comment">// 没有权限,做其他操作</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>这样的话我们进入后台界面后还要根据当前用户动态渲染出对应的侧边菜单，那么这样就又要遍历一遍，而且这样的话所有的路由写死在 router 里面了，也就是说应用开始的时候就会注册这些路由，不论你的角色是什么，我想做到每个不同的用户他的路由不同，那么要怎么做？我参考了 <a href="https://juejin.im/post/591aa14f570c35006961acac" target="_blank" rel="noopener">手摸手，带你用vue撸后台 系列二(登录权限篇)</a> 这篇文章，具体做法是：在生成的 router/index.js 里面写入两种类型的路由，其中一种是无论如何都会被挂载的路由，例如 /login，/404 这种，在变化的路由中写入需要根据用户权限不同动态生成的路由，初始化的时候只挂载固定路由，等到用户登录之后拿到用户的信息，信息中包含用户的角色权限，拿到用户的权限之后再去刚刚写的动态路由表中匹配当前用户的路由，过滤出路由就可以根据 vue 的 api <strong>addRoutes</strong> 添加在路由表中</p>
+<ul>
+<li><p>固定路由表如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> constantRoutes = [</span><br><span class="line">    &#123;</span><br><span class="line">        path: <span class="string">'/'</span>,</span><br><span class="line">        name: <span class="string">'root'</span>,</span><br><span class="line">        hidden: <span class="literal">true</span>,</span><br><span class="line">        component: Layout,</span><br><span class="line">        redirect:&#123;<span class="attr">name</span>:<span class="string">'dashboard'</span>&#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">        path: <span class="string">'/login'</span>,</span><br><span class="line">        name: <span class="string">'login'</span>,</span><br><span class="line">        hidden: <span class="literal">true</span>,</span><br><span class="line">        component: <span class="function"><span class="params">()</span> =&gt;</span> <span class="keyword">import</span>(<span class="string">'@/views/login/Login'</span>)</span><br><span class="line">    &#125;, &#123;</span><br><span class="line">        path: <span class="string">''</span>,</span><br><span class="line">        name: <span class="string">'DashBoard'</span>,</span><br><span class="line">        component: Layout,</span><br><span class="line">        meta: &#123;<span class="attr">roles</span>: [<span class="string">'admin'</span>, <span class="string">'super'</span>],<span class="attr">icon</span>:<span class="string">'tachometer-alt'</span>&#125;,</span><br><span class="line">        children: [</span><br><span class="line">            &#123;</span><br><span class="line">                path: <span class="string">'/dashboard'</span>,</span><br><span class="line">                name: <span class="string">'dashboard'</span>,</span><br><span class="line">                component: <span class="function"><span class="params">()</span> =&gt;</span> <span class="keyword">import</span>(<span class="string">'@/views/dashboard/DashBoard'</span>),</span><br><span class="line">                meta: &#123;<span class="attr">roles</span>: [<span class="string">'admin'</span>, <span class="string">'super'</span>]&#125;</span><br><span class="line">            &#125;</span><br><span class="line">        ]</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      path:<span class="string">'/test'</span>,</span><br><span class="line">      name:<span class="string">'test'</span>,</span><br><span class="line">      hidden:<span class="literal">true</span>,</span><br><span class="line">      component:<span class="function"><span class="params">()</span>=&gt;</span><span class="keyword">import</span>(<span class="string">'@/views/test/Test'</span>)</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">        path: <span class="string">'*'</span>,</span><br><span class="line">        hidden: <span class="literal">true</span>,</span><br><span class="line">        component: Error404,</span><br><span class="line">    &#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<p>其中路由项由path、name、以及component，hidden指的是是否隐藏，我们在后面渲染侧边栏菜单的时候会使用到，还有一个属性 meta ，也就是元数据，在官方的 <a href="https://router.vuejs.org/zh/guide/advanced/meta.html" target="_blank" rel="noopener">文档</a> 中有提到，就是说我们可以在路由里面添加一些我们需要的额外信息，这里就把权限信息放在了里面，意思是说只有包含在 roles 数组中的角色才能访问这一条路由，而 Layout 是布局页面。</p>
+</li>
+<li><p>动态路由表如下</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> asyncRoutes = [</span><br><span class="line">    &#123;</span><br><span class="line">        path: <span class="string">''</span>,</span><br><span class="line">        name: <span class="string">'Permission'</span>,</span><br><span class="line">        component: Layout,</span><br><span class="line">        meta:&#123;<span class="attr">roles</span>:[<span class="string">'super'</span>],<span class="attr">icon</span>:<span class="string">'cog'</span>&#125;,</span><br><span class="line">        children: [</span><br><span class="line">            &#123;</span><br><span class="line">                path: <span class="string">'/permission'</span>,</span><br><span class="line">                name: <span class="string">'permission'</span>,</span><br><span class="line">                component: <span class="function"><span class="params">()</span> =&gt;</span> <span class="keyword">import</span>(<span class="string">'@/views/permission/Permission'</span>),</span><br><span class="line">                meta: &#123;<span class="attr">roles</span>: [<span class="string">'super'</span>]&#125;</span><br><span class="line">            &#125;</span><br><span class="line">        ]</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">        path: <span class="string">''</span>,</span><br><span class="line">        name: <span class="string">'Excel'</span>,</span><br><span class="line">        component: Layout,</span><br><span class="line">        meta:&#123;<span class="attr">roles</span>:[<span class="string">'admin'</span>,<span class="string">'super'</span>],<span class="attr">icon</span>:<span class="string">'file-excel'</span>&#125;,</span><br><span class="line">        children: [</span><br><span class="line">            &#123;</span><br><span class="line">                path: <span class="string">'/exportSheet'</span>,</span><br><span class="line">                name: <span class="string">'exportSheet'</span>,</span><br><span class="line">                component: <span class="function"><span class="params">()</span> =&gt;</span> <span class="keyword">import</span>(<span class="string">'@/views/excel/ExportSheet'</span>),</span><br><span class="line">                meta: &#123;<span class="attr">roles</span>: [<span class="string">'admin'</span>, <span class="string">'super'</span>]&#125;</span><br><span class="line">            &#125;,</span><br><span class="line">            &#123;</span><br><span class="line">                path: <span class="string">'/importSheet'</span>,</span><br><span class="line">                name: <span class="string">'importSheet'</span>,</span><br><span class="line">                component: <span class="function"><span class="params">()</span> =&gt;</span> <span class="keyword">import</span>(<span class="string">'@/views/excel/ImportSheet'</span>),</span><br><span class="line">                meta: &#123;<span class="attr">roles</span>: [<span class="string">'super'</span>]&#125;</span><br><span class="line">            &#125;</span><br><span class="line">        ]</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">        path:<span class="string">''</span>,</span><br><span class="line">        name:<span class="string">'Dormitory'</span>,</span><br><span class="line">        component:Layout,</span><br><span class="line">        meta:&#123;<span class="attr">roles</span>:[<span class="string">'admin'</span>,<span class="string">'super'</span>],<span class="attr">icon</span>:<span class="string">'home'</span>&#125;,</span><br><span class="line">        children:[</span><br><span class="line">            &#123;</span><br><span class="line">                path:<span class="string">'/dormitoryList'</span>,</span><br><span class="line">                name:<span class="string">'dormitoryList'</span>,</span><br><span class="line">                component:<span class="function"><span class="params">()</span>=&gt;</span><span class="keyword">import</span>(<span class="string">'@/views/dormitory/DormitoryList'</span>),</span><br><span class="line">                meta:&#123;<span class="attr">roles</span>:[<span class="string">'admin'</span>,<span class="string">'super'</span>]&#125;</span><br><span class="line">            &#125;,</span><br><span class="line">            &#123;</span><br><span class="line">                path:<span class="string">'/saveDormitory'</span>,</span><br><span class="line">                name:<span class="string">'saveDormitory'</span>,</span><br><span class="line">                component:<span class="function"><span class="params">()</span>=&gt;</span><span class="keyword">import</span>(<span class="string">'@/views/dormitory/SaveDormitoryInfo'</span>),</span><br><span class="line">                meta:&#123;<span class="attr">roles</span>:[<span class="string">'admin'</span>,<span class="string">'super'</span>]&#125;</span><br><span class="line">            &#125;</span><br><span class="line">        ]</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">        path:<span class="string">''</span>,</span><br><span class="line">        name:<span class="string">'Complaint'</span>,</span><br><span class="line">        component:Layout,</span><br><span class="line">        meta:&#123;<span class="attr">roles</span>:[<span class="string">'admin'</span>,<span class="string">'super'</span>],<span class="attr">icon</span>:<span class="string">'angry'</span>&#125;,</span><br><span class="line">        children:[</span><br><span class="line">            &#123;</span><br><span class="line">                path:<span class="string">'/complaint'</span>,</span><br><span class="line">                name:<span class="string">'complaint'</span>,</span><br><span class="line">                component:<span class="function"><span class="params">()</span>=&gt;</span><span class="keyword">import</span>(<span class="string">'@/views/complaint/Complaint'</span>),</span><br><span class="line">                meta:&#123;<span class="attr">roles</span>:[<span class="string">'admin'</span>,<span class="string">'super'</span>]&#125;</span><br><span class="line">            &#125;</span><br><span class="line">        ]</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// ...更多路由项...</span></span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<p>这里我们在 父路由和子路由上都加入了 meta 元数据，这是因为我们要做子页面的权限控制，其中一级相当于是侧边菜单的一级菜单，Layout 是布局文件，因为我们的主窗口的布局是相同的，左边菜单栏，上面是 header ，右边显示的是主要的窗口，我们只要改变子组件就可以改变对应的视图</p>
+</li>
+</ul>
+<p>那么我们应该如何根据过滤出来的路由表对应的生成侧边栏菜单呢？看看这段代码</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">filterRoutes</span>(<span class="params">accessRoutes, role</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// 过滤出所有不隐藏的路由</span></span><br><span class="line">    accessRoutes = accessRoutes.filter(<span class="function"><span class="params">r</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> !r.hidden</span><br><span class="line">    &#125;)</span><br><span class="line">    <span class="comment">// 过滤出符合角色的路由</span></span><br><span class="line">    accessRoutes = accessRoutes.filter(<span class="function"><span class="params">r</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (r.children) &#123;</span><br><span class="line">            <span class="keyword">let</span> children = r.children</span><br><span class="line">            r.children = filterRoutes(children, role)</span><br><span class="line">            <span class="keyword">if</span> (r.children.length === <span class="number">0</span>) &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (!hasPermission([role], r)) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> accessRoutes</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">hasPermission</span>(<span class="params">roles, route</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (route.meta &amp;&amp; route.meta.roles) &#123;</span><br><span class="line">        <span class="keyword">return</span> roles.some(<span class="function"><span class="params">role</span> =&gt;</span> route.meta.roles.includes(role))</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里首先把所有隐藏起来，即不显示在侧边栏的菜单过滤掉，然后跟根据用户的角色比对动态路由表，看看权限是否匹配，如果不匹配那么就把这条路由忽略，对于子路由也有相应的判断，这里是通过递归调用来判断子路由，然后我们就可以拿到当前用户的路由表，通过 vue-router 的 <strong>addRoute</strong> 方法吧路由动态的添加到路由表中，这样就可以访问了，我们在执行 <strong>addRoute</strong> 之前 Vue 的实例是没有挂载这些路由的，所以我们访问的时候会 404，登陆之后还要根据刚刚生成的生成可访问的菜单项，我们把生成的路由保存在 vuex 中，在侧边栏组件中获取路由表并生成菜单，生成菜单的逻辑如下：</p>
+<p>从store中获取路由菜单</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">    name: <span class="string">"LeftDraw"</span>,</span><br><span class="line">    components: &#123;</span><br><span class="line">        Submenu</span><br><span class="line">    &#125;,</span><br><span class="line">    data() &#123;</span><br><span class="line">        <span class="keyword">return</span> &#123;</span><br><span class="line">            routes: <span class="keyword">this</span>.$store.state.routes</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">        &lt;el-scrollbar wrap-<span class="class"><span class="keyword">class</span></span>=<span class="string">"scrollbar-wrapper"</span>&gt;</span><br><span class="line">            &lt;el-menu</span><br><span class="line">                    <span class="class"><span class="keyword">class</span></span>=<span class="string">"menu"</span></span><br><span class="line">                    background-color=<span class="string">"#2f3640"</span></span><br><span class="line">                    active-text-color=<span class="string">"#fff"</span></span><br><span class="line">                    text-color=<span class="string">"#fff"</span></span><br><span class="line">                    :collapse-transition=<span class="string">"false"</span></span><br><span class="line">                    mode=<span class="string">"vertical"</span>&gt;</span><br><span class="line">                &lt;el-submenu v-<span class="keyword">for</span>=<span class="string">"(route,index) in routes"</span></span><br><span class="line">                            :key=<span class="string">"index"</span></span><br><span class="line">                            :index=<span class="string">"index.toString()"</span>&gt;</span><br><span class="line"></span><br><span class="line">                    &lt;template slot=<span class="string">"title"</span> <span class="class"><span class="keyword">class</span></span>=<span class="string">"menu-title"</span>&gt;</span><br><span class="line">                        &lt;i <span class="class"><span class="keyword">class</span></span>=<span class="string">"fas"</span> :<span class="class"><span class="keyword">class</span></span>=<span class="string">"'fa-'+route.meta.icon"</span> style=<span class="string">"margin-right: 10px"</span>&gt;<span class="xml"><span class="tag">&lt;/<span class="name">i</span>&gt;</span></span>&#123;&#123;route.name&#125;&#125;</span><br><span class="line">                    &lt;<span class="regexp">/template&gt;</span></span><br><span class="line"><span class="regexp">                    &lt;Submenu :menus="route.children"&gt;&lt;/</span>Submenu&gt;</span><br><span class="line"></span><br><span class="line">                &lt;<span class="regexp">/el-submenu&gt;</span></span><br><span class="line"><span class="regexp">            &lt;/</span>el-menu&gt;</span><br><span class="line">        &lt;<span class="regexp">/el-scrollbar&gt;</span></span><br><span class="line"><span class="regexp">    &lt;/</span>div&gt;</span><br><span class="line">&lt;<span class="regexp">/template&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// submenu</span></span><br><span class="line">&lt;template&gt;</span><br><span class="line">    &lt;div <span class="class"><span class="keyword">class</span></span>=<span class="string">"wrapper"</span>&gt;</span><br><span class="line">        &lt;el-menu-item v-<span class="keyword">for</span>=<span class="string">"(menu,index) in menus"</span></span><br><span class="line">                      :key=<span class="string">"index"</span></span><br><span class="line">                      background-color=<span class="string">"#000000"</span></span><br><span class="line">                      <span class="class"><span class="keyword">class</span></span>=<span class="string">"subitem"</span>&gt;</span><br><span class="line">            &lt;router-link :to=<span class="string">"menu.path"</span> <span class="class"><span class="keyword">class</span></span>=<span class="string">"sub"</span>&gt;</span><br><span class="line">                &#123;&#123;menu.name&#125;&#125;</span><br><span class="line">            &lt;<span class="regexp">/router-link&gt;</span></span><br><span class="line"><span class="regexp">        &lt;/</span>el-menu-item&gt;</span><br><span class="line">    &lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">&lt;/</span>template&gt;</span><br><span class="line">&lt;script&gt;</span><br><span class="line">    <span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">        name: <span class="string">"Submenu"</span>,</span><br><span class="line">        props: [</span><br><span class="line">            <span class="string">'menus'</span></span><br><span class="line">        ],</span><br><span class="line">        mounted() &#123;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&lt;<span class="regexp">/script&gt;</span></span><br></pre></td></tr></table></figure>
+<p>这边搞定之后还有一个问题，因为我们的用户数据，比如登录拿到的 token 和用户的权限信息我们是放在 vuex 中，我们刷新页面的时候就会把存储在里面的数据全都刷掉，因为我们在路由改变之前有进行判断，我在全局的 js 里面写了这样的逻辑</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">router.beforeEach(<span class="function">(<span class="params">to, <span class="keyword">from</span>, next</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> hasToken = store.state.token &amp;&amp; store.state.token.length &gt; <span class="number">0</span></span><br><span class="line">    <span class="keyword">let</span> hasRole = store.state.role &amp;&amp; store.state.role.length &gt; <span class="number">0</span></span><br><span class="line">    <span class="keyword">if</span> (to.path === <span class="string">'/login'</span>) &#123;</span><br><span class="line">        <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve,reject</span>)=&gt;</span>&#123;</span><br><span class="line">            store.commit(<span class="string">'resetInfo'</span>)</span><br><span class="line">            resolve()</span><br><span class="line">        &#125;).then(<span class="function"><span class="params">()</span>=&gt;</span>&#123;</span><br><span class="line">            next()</span><br><span class="line">        &#125;).catch(<span class="function">(<span class="params">err</span>)=&gt;</span>&#123;</span><br><span class="line">            <span class="built_in">console</span>.error(err)</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (!hasToken || !hasRole) &#123;</span><br><span class="line">            <span class="comment">// alert("you are not login")</span></span><br><span class="line">            next(&#123;<span class="attr">path</span>: <span class="string">'/login'</span>&#125;)</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            next()</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>我们在每次路由跳转之前都从 store 中看看是否有 token 和 role 信息，如果有，那么说明用户已经登录，那么只需要继续即可，路由的判断在之前已经做好了，用户不会访问到无权操作的界面，如果没有对应的信息的话，那么就是还没有登录或是信息过期等，那就让他重定向到登录页重新登陆一次，但是这样有可能会造成这样一种情况：我登录之后可能由于某些原因刷新了页面，但是这时候还是我在操作，但是刚才存储在store里面的数据已经没有了，根据逻辑就需要重新登录，这样就造成了用户体验不好，那么我的想法是把用户的信息存储在 cookie 里面，这样刷新的时候先去 cookie 里面看看是否有用户信息，如果有直接拿来用，如果没有在让他进行登录。</p>
+<p>关于这部分的代码还没有完成，先把思路记下。</p>
+<blockquote>
+<p>参考文章 <a href="https://juejin.im/post/591aa14f570c35006961acac" target="_blank" rel="noopener">手摸手，带你用vue撸后台 系列二(登录权限篇)</a></p>
+</blockquote>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">spring</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">vue 前端</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://kwm42.github.io/2019/04/23/用vue-js做前端权限校验/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
   
   
-    </div></section>
+    <a href="/2019/03/31/JavaScript中的原型是什么/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">JavaScript中的原型是什么</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+  
+  
   
 
-    
+  
+
+  
+
+  
 
 
           </div>
@@ -222,9 +365,9 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
-		isTag: true,
+		isTag: false,
 		isCategory: false,
 		open_in_new: false,
 		toc_hide_index: true,
