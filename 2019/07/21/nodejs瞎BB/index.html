@@ -6,15 +6,19 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://kwm42.github.io">
-  <title>KWM&#39;s BLOG</title>
+  <title>nodejs瞎BB | KWM&#39;s BLOG</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="KWM&#39;s BLOG">
-<meta property="og:url" content="http://kwm42.github.io/page/2/index.html">
+  <meta name="description" content="瞎BB">
+<meta property="og:type" content="article">
+<meta property="og:title" content="nodejs瞎BB">
+<meta property="og:url" content="http://kwm42.github.io/2019/07/21/nodejs瞎BB/index.html">
 <meta property="og:site_name" content="KWM&#39;s BLOG">
+<meta property="og:description" content="瞎BB">
 <meta property="og:locale" content="zh_CN en_US">
+<meta property="og:updated_time" content="2019-07-21T02:09:51.164Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="KWM&#39;s BLOG">
+<meta name="twitter:title" content="nodejs瞎BB">
+<meta name="twitter:description" content="瞎BB">
   
     <link rel="alternative" href="/atom.xml" title="KWM&#39;s BLOG" type="application/atom+xml">
   
@@ -146,34 +150,65 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-    <article id="post-spring-boot问题记录" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+            <article id="post-nodejs瞎BB" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/12/18/spring-boot问题记录/">spring-boot问题记录</a>
+    <h1 class="article-title" itemprop="name">
+      nodejs瞎BB
     </h1>
   
 
         
-        <a href="/2018/12/18/spring-boot问题记录/" class="archive-article-date">
-  	<time datetime="2018-12-18T09:12:22.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-12-18</time>
+        <a href="/2019/07/21/nodejs瞎BB/" class="archive-article-date">
+  	<time datetime="2019-07-21T01:59:57.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-07-21</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>spring-boot 问题</p>
-        
-          <a class="article-more-a" href="/2018/12/18/spring-boot问题记录/#more">more >></a>
-        
+        <p>瞎BB</p>
+<a id="more"></a>
+<p>什么是nodejs</p>
+<blockquote>
+<p>Node.js® is a JavaScript runtime built on <a href="https://v8.dev/" target="_blank" rel="noopener">Chrome’s V8 JavaScript engine</a>.</p>
+</blockquote>
+<p>意思就是说 Node.js 是建立在 Chrome V8 引擎上的 js <strong>运行环境</strong>，注意是「运行环境」而不是一种新的语言。</p>
+<p>为什么要有 Node.js？</p>
+<p>我的理解是从前后端方面来说的，从前程序猿们开发 web 应用的时候基本都是后端的活，数据库查询、业务逻辑、返回的页面结构也是后端程序猿们写的，比如在 JSP 代码里 response 直接输出 HTML 代码，而前端程序猿们需要做的是改改样式（css）写写动画（JavaScript），于是前端的程序猿们就贝鄙视了。。。直到 node 出现，我们知道 JavaScript 是运行在浏览器上的，那么 Node.js 做的事就是让 JavaScript 可以再服务端运行，Node.js 是用 c++ 编写的，所以有了它之后，JavaScript 可以做一些之前做不到的事情，比如说在浏览器的情况下，由于浏览器的限制对于文件的操作是有限的，但是通过 c++ 的一些调用，可以很容易的实现对文件的操作，这就使得 JavaScript 有了更多的可能，而 Node.js 中有许多的模块，比如 fs、os、path 等，这些 api 和 Node.js 使得 JavaScript 甚至可以编写后端代码，是的，只要 js 就可以完成前端到后端的工作，但是后端程序猿们肯定是觉得「呵呵」，所以现在的前后端项目的组织就是后端提供 api 接口，并且完成业务逻辑部分，前端负责交互和页面的展示，那 Node.js 是干什么用的呢，根据这几天看的公司代码和网上的总结，Node 一般是作为中间层来使用的，因为有可能后端给的数据不符合前端的格式，那么前端和后端就会开始撕逼，前端觉得「你帮我加一个接口不就好了？有那么难吗」，后端觉得「你自己把数据重新组合封装一下不就好了，干嘛要多写一个接口？」，于是乎，前端程序员们把 Node.js 搞成一个中间层，页面从 Node 请求数据，而 Node 去后端拿真正的数据，还可以封装一些逻辑在里面，这样前端就能搞到自己想要的数据了，而且还能自己定路由（鼓掌啪啪啪啪啪）。</p>
+<blockquote>
+<p>Node 具有非阻塞，事件驱动的特点</p>
+</blockquote>
+<p>事件驱动是啥？</p>
+<p>这和 JavaScript 的事件模型有关，我们知道 JavaScript 是单线程的，也就是说它一次只能执行一件事情，因为 JavaScript 是为了浏览器设计的，为了避免它太复杂就设计成了单线程的，那单线程的话阻塞了的话后面的代码不就都不能执行了吗？是的，所以 JavaScript 有回调机制，例如一个事件要求读取某个文件，但是这个文件又比较大的话那么程序就会卡在这个点等待文件读取完毕然后再继续执行下面的代码，所以如果 IO 之类的操作很频繁的话程序就顶不住了，但是为什么 Node.js 会擅长 IO 密集型的任务呢，这就得益于它的事件循环模型了，当有一个事件发生的时候，Node.js 不像其他语言例如 Java 搞一个线程来处理，它采用回调函数的方式，可以这么认为，程序一直在跑接受请求，当有请求发生的时候，如果需要处理事件，那么就会把它放到一个事件队列的东西，然后让它自己跑，再接着处理后面的请求，等到那个事件完成的时候，因为有回调函数的原因，所以它结束的时候就可以通过回调函数执行后面的逻辑，可以看到由于事件模型，js 是不会浪费很多的时间在处理这种 IO 之类的操作的，所以说 Node.js 擅长于处理那些 IO 密集型的任务，相反对于那些 cpu 密集的任务相比就不那么好了，因为他是单线程，所以不会很好的利用 cpu 的资源。</p>
+<p>非阻塞？再说吧</p>
+
       
 
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
       
     </div>
     <div class="article-info article-info-index">
@@ -182,16 +217,75 @@
       
 
       
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/12/18/spring-boot问题记录/">展开全文 >></a>
-        </p>
-      
 
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://kwm42.github.io/2019/07/21/nodejs瞎BB/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
       
       <div class="clearfix"></div>
     </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
+  
+  
+    <a href="/2019/07/11/js异步与 co 模块/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">js异步与 co 模块</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
 
 <aside class="wrap-side-operation">
     <div class="mod-side-operation">
@@ -211,413 +305,14 @@
 
 
 
-
-  
-    <article id="post-Vue中json-server的使用" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/11/16/Vue中json-server的使用/">Vue中json-server的使用</a>
-    </h1>
-  
-
-        
-        <a href="/2018/11/16/Vue中json-server的使用/" class="archive-article-date">
-  	<time datetime="2018-11-16T03:21:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-11-16</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Vue 中 json-server 的使用，mock 模拟数据。</p>
-        
-          <a class="article-more-a" href="/2018/11/16/Vue中json-server的使用/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/11/16/Vue中json-server的使用/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-vuex基本使用" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/11/14/vuex基本使用/">vuex基本使用</a>
-    </h1>
-  
-
-        
-        <a href="/2018/11/14/vuex基本使用/" class="archive-article-date">
-  	<time datetime="2018-11-14T01:12:45.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-11-14</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>vuex的基本使用，Vue 的数据状态管理插件。</p>
-        
-          <a class="article-more-a" href="/2018/11/14/vuex基本使用/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/11/14/vuex基本使用/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-网络通信解析" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/07/19/网络通信解析/">网络通信解析</a>
-    </h1>
-  
-
-        
-        <a href="/2018/07/19/网络通信解析/" class="archive-article-date">
-  	<time datetime="2018-07-19T09:13:24.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-07-19</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>网络通信解析，网络模型的简述。</p>
-        
-          <a class="article-more-a" href="/2018/07/19/网络通信解析/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/07/19/网络通信解析/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Vue.js入门" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/06/07/Vue.js入门/">Vue.js 入门</a>
-    </h1>
-  
-
-        
-        <a href="/2018/06/07/Vue.js入门/" class="archive-article-date">
-  	<time datetime="2018-06-07T02:17:08.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-06-07</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Vue.js基础开发，开发环境搭建与运行。</p>
-        
-          <a class="article-more-a" href="/2018/06/07/Vue.js入门/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/06/07/Vue.js入门/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-信号量与进程互斥" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/05/27/信号量与进程互斥/">信号量与进程互斥</a>
-    </h1>
-  
-
-        
-        <a href="/2018/05/27/信号量与进程互斥/" class="archive-article-date">
-  	<time datetime="2018-05-27T09:12:53.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-27</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>信号量与进程互斥，信号量的原理与在进程之间的使用。</p>
-        
-          <a class="article-more-a" href="/2018/05/27/信号量与进程互斥/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/05/27/信号量与进程互斥/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-单功能非线性流水线的调度方案-java" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/05/13/单功能非线性流水线的调度方案-java/">单功能非线性流水线的调度方案[java]</a>
-    </h1>
-  
-
-        
-        <a href="/2018/05/13/单功能非线性流水线的调度方案-java/" class="archive-article-date">
-  	<time datetime="2018-05-13T09:13:11.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-13</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>单功能非线性流水线的调度方案，使用 Java 语言实现的模拟流水线的调度程序。</p>
-        
-          <a class="article-more-a" href="/2018/05/13/单功能非线性流水线的调度方案-java/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">操作系统</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/05/13/单功能非线性流水线的调度方案-java/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
   
   
-    <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
-    </nav>
+  
+
+  
+
+  
+
   
 
 
@@ -640,8 +335,8 @@
     <script>
 	var yiliaConfig = {
 		mathjax: false,
-		isHome: true,
-		isPost: false,
+		isHome: false,
+		isPost: true,
 		isArchive: false,
 		isTag: false,
 		isCategory: false,

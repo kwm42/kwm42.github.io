@@ -6,15 +6,19 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://kwm42.github.io">
-  <title>KWM&#39;s BLOG</title>
+  <title>js异步与 co 模块 | KWM&#39;s BLOG</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="KWM&#39;s BLOG">
-<meta property="og:url" content="http://kwm42.github.io/page/2/index.html">
+  <meta name="description" content="简单的看看 koa 中的 co 模块。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="js异步与 co 模块">
+<meta property="og:url" content="http://kwm42.github.io/2019/07/11/js异步与 co 模块/index.html">
 <meta property="og:site_name" content="KWM&#39;s BLOG">
+<meta property="og:description" content="简单的看看 koa 中的 co 模块。">
 <meta property="og:locale" content="zh_CN en_US">
+<meta property="og:updated_time" content="2019-07-21T02:09:40.239Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="KWM&#39;s BLOG">
+<meta name="twitter:title" content="js异步与 co 模块">
+<meta name="twitter:description" content="简单的看看 koa 中的 co 模块。">
   
     <link rel="alternative" href="/atom.xml" title="KWM&#39;s BLOG" type="application/atom+xml">
   
@@ -146,34 +150,90 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-    <article id="post-spring-boot问题记录" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+            <article id="post-js异步与 co 模块" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/12/18/spring-boot问题记录/">spring-boot问题记录</a>
+    <h1 class="article-title" itemprop="name">
+      js异步与 co 模块
     </h1>
   
 
         
-        <a href="/2018/12/18/spring-boot问题记录/" class="archive-article-date">
-  	<time datetime="2018-12-18T09:12:22.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-12-18</time>
+        <a href="/2019/07/11/js异步与 co 模块/" class="archive-article-date">
+  	<time datetime="2019-07-11T01:59:52.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-07-11</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>spring-boot 问题</p>
-        
-          <a class="article-more-a" href="/2018/12/18/spring-boot问题记录/#more">more >></a>
-        
+        <p>简单的看看 koa 中的 co 模块。</p>
+<a id="more"></a>
+<p>什么是回调函数，就是把一个函数传入另一个函数，等到合适的时候就执行这个函数，称为callback。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">readStart</span>(<span class="params">callback</span>)</span>&#123;</span><br><span class="line">   <span class="built_in">console</span>.log(<span class="string">'read file start'</span>);</span><br><span class="line">   callback()</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">reading</span>(<span class="params">callback</span>)</span>&#123;</span><br><span class="line">   <span class="built_in">console</span>.log(<span class="string">'reading file'</span>);</span><br><span class="line">   callback();</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">readFinish</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">   <span class="built_in">console</span>.log(<span class="string">'read file finished'</span>);</span><br><span class="line">&#125;</span><br><span class="line">readStart(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">   reading(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">      readFinish();</span><br><span class="line">   &#125;)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">readStart();</span><br><span class="line"><span class="comment">// output:</span></span><br><span class="line"><span class="comment">// read file start</span></span><br><span class="line"><span class="comment">// reading file</span></span><br><span class="line"><span class="comment">// read file finished</span></span><br></pre></td></tr></table></figure>
+<p>可以看到，回调函数就是按照各个阶段分成了各个部分，在各自的执行过程中，等到合适的时候调用下一个回调函数从而实现异步操作。这样的问题很明显，如果嵌套很多层的话那么这个回调就会看起来特别的长，一层一层的类似于金字塔的样子，所以称为回调金字塔。</p>
+<p>我们或许可以用 ES6 的 Promise 来重新改写一下这个东西，写完之后可能是这样的：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">readStart</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">   <span class="built_in">console</span>.log(<span class="string">'read file start'</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">reading</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">   <span class="built_in">console</span>.log(<span class="string">'reading file'</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">readFinish</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">   <span class="built_in">console</span>.log(<span class="string">'read file finished'</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">   resolve()</span><br><span class="line">&#125;)</span><br><span class="line">.then(<span class="function"><span class="params">_</span> =&gt;</span> &#123;</span><br><span class="line">   readStart();</span><br><span class="line">&#125;)</span><br><span class="line">.then(<span class="function"><span class="params">_</span> =&gt;</span> &#123;</span><br><span class="line">   reading();</span><br><span class="line">&#125;)</span><br><span class="line">.then(<span class="function"><span class="params">_</span> =&gt;</span> &#123;</span><br><span class="line">   readFinish();</span><br><span class="line">&#125;)</span><br><span class="line"><span class="comment">// output:</span></span><br><span class="line"><span class="comment">// read file start</span></span><br><span class="line"><span class="comment">// reading file</span></span><br><span class="line"><span class="comment">// read file finished</span></span><br></pre></td></tr></table></figure>
+<p>输出与上面一致，我认为这种写法就是看起来好看一些而已，还是看的出来是回调的写法，只是换了层皮，没有什么实质性的区别，不过确实比上面看起来好多了。那么有没有什么更好的方法呢，答案肯定是有的，那就是 ES6 的 Generator 函数，也就是生成器函数，如果使用生成器函数的话，上面的例子可以怎么写呢？</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">readStart</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">   <span class="built_in">console</span>.log(<span class="string">'read file start'</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">reading</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">   <span class="built_in">console</span>.log(<span class="string">'reading file'</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">readFinish</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">   <span class="built_in">console</span>.log(<span class="string">'read file finished'</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> *<span class="title">readFile</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">   <span class="keyword">yield</span> readStart();</span><br><span class="line">   <span class="keyword">yield</span> reading();</span><br><span class="line">   <span class="keyword">yield</span> readFinish();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> fn = readFile();</span><br><span class="line"><span class="built_in">console</span>.log(fn.next());</span><br><span class="line"><span class="comment">// read file start</span></span><br><span class="line"><span class="comment">// Object &#123; value: undefined, done: false &#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(fn.next());</span><br><span class="line"><span class="comment">// reading file</span></span><br><span class="line"><span class="comment">// Object &#123; value: undefined, done: false &#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(fn.next());</span><br><span class="line"><span class="comment">// read file finished</span></span><br><span class="line"><span class="comment">// Object &#123; value: undefined, done: false &#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(fn.next());</span><br><span class="line"><span class="comment">// Object &#123; value: undefined, done: true &#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(fn.next());</span><br><span class="line"><span class="comment">// Object &#123; value: undefined, done: true &#125;</span></span><br></pre></td></tr></table></figure>
+<p>我们每次调用 next 的时候就输出一段话，准确的说应该是执行到下一个 yield 语句的地方，遇到生成器函数里面的 yield 语句的时候会暂停一下，并且会保存函数执行上下文，然后把控制权交给 yield 后面的函数所以没次到 yield 的时候就会停住，并且执行后面的函数，这里因为后面跟着的是 console.log 语句，所以就是打印一段输出，可以看到控制台输出的结果还包含了一个对象，也就是 fn.next() 的返回值，其中 value 是执行的函数的返回值，因为我们这里的函数都只是输出一段话，所以就没有返回值，如果我们在函数中加入返回值，比如说</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">readStart</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">   <span class="built_in">console</span>.log(<span class="string">'read file start'</span>);</span><br><span class="line">   <span class="keyword">return</span> <span class="string">'hello'</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 其他不变 输出结果:</span></span><br><span class="line"><span class="comment">// read file start index.js:2:12</span></span><br><span class="line"><span class="comment">// Object &#123; value: "hello", done: false &#125;</span></span><br><span class="line"><span class="comment">// .....</span></span><br></pre></td></tr></table></figure>
+<p>可以看出这个 value 就是执行的函数的返回值，而 done 指的是这个生成器函数结束了没有，我们看到在第三条信息输出之后，也就是 finished 之后，我们再次调用 fn.next() 的时候 done 的值就变成了 true，而后面不管怎么调用都是 true，说明已经执行结束了。重点看一下 readFile 函数，不像上面说到的回调和 Promise 要写很多层嵌套之类的，如果把 readFile 里面的 yield 去掉的话那看起来就和一般的同步函数没什么两样，因为我们人的思维是同步的，所以用生成器函数这种写法的话比较符合人的思维习惯，但是也能看出来有一个不好的点，那就是每次都要调用一下才可以得到结果然后继续执行，如果又遇到了下一个 yield 那么就要再调用一次 next 方法，这样实在是很麻烦，那么有没有什么好方法呢？答案肯定是有的，那就是 co 模块，最近在看一个前端项目的代码，用的是 koa 写的，其中就有大量用到了生成器函数，但是开始看的时候有个让我很费解的问题，那就是在 koa 的路由一般是这么写的：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">route.get(<span class="string">'/path/here'</span>, <span class="function"><span class="keyword">function</span>* (<span class="params">next</span>)</span>&#123;</span><br><span class="line">    <span class="comment">// code here</span></span><br><span class="line">    <span class="comment">// 若干 yield 语句</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>整个应用启动了之后，根本没有任何地方像刚刚我们那样调用 next 函数，但是我们一个请求过来的时候整个函数就是会一次性全部结束，看起来就和一般的函数一样，那么这是怎么回事，那就是 koa 的 co 模块，他会帮我们自动调用生成器函数知道全部执行结束！（lol 真神奇），接下来就看看 co 模块是什么鬼。</p>
+<p>如果我们要写一个函数帮助我们自动执行 generator function 的话会怎么写？一个乞丐的不能再乞丐的版本可能是这样的：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">myco</span>(<span class="params">gen</span>)</span>&#123;</span><br><span class="line">   <span class="keyword">let</span> fn = gen();</span><br><span class="line">   <span class="keyword">while</span>(!fn.done) fn.next();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>调用生成器函数返回一个生成器，然后根据 done 属性，刚刚提到 done 是表示生成器是否结束的意思，那么如果他没有结束的话，就一直调用 next 直到结束为止，那么这个乞丐版本的 co 真的可以用吗？</p>
+<p>嗯哼~</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 其他不变</span></span><br><span class="line">myco(readFile);</span><br><span class="line"><span class="comment">// read file start</span></span><br><span class="line"><span class="comment">// reading file</span></span><br><span class="line"><span class="comment">// read file finished</span></span><br></pre></td></tr></table></figure>
+<p>哦豁完美，但是这也太辣鸡了吧，就这么简单？当然不是，我们看看 co 函数的源码：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">co</span>(<span class="params">gen</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> ctx = <span class="keyword">this</span>;</span><br><span class="line">  <span class="keyword">var</span> args = slice.call(<span class="built_in">arguments</span>, <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// we wrap everything in a promise to avoid promise chaining,</span></span><br><span class="line">  <span class="comment">// which leads to memory leak errors.</span></span><br><span class="line">  <span class="comment">// see https://github.com/tj/co/issues/180</span></span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span>(<span class="params">resolve, reject</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// 如果 gen 是一个函数就调用一下，就像之前我们做的那样，返回一个生成器</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> gen === <span class="string">'function'</span>) gen = gen.apply(ctx, args);</span><br><span class="line">    <span class="comment">// 如果函数没有返回值或者不是 next 不是函数，就直接结束</span></span><br><span class="line">    <span class="comment">// 因为我们说过生成器函数返回的生成器有 next 方法，调用一下就返回下一个结果</span></span><br><span class="line">    <span class="keyword">if</span> (!gen || <span class="keyword">typeof</span> gen.next !== <span class="string">'function'</span>) <span class="keyword">return</span> resolve(gen);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 全部执行，大概就这样翻译吧，就是把生成的生成器全部调用结束，直到 done 是 true 为止</span></span><br><span class="line">    onFulfilled();</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * @param &#123;Mixed&#125; res</span></span><br><span class="line"><span class="comment">     * @return &#123;Promise&#125;</span></span><br><span class="line"><span class="comment">     * @api private</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">onFulfilled</span>(<span class="params">res</span>) </span>&#123;</span><br><span class="line">      <span class="keyword">var</span> ret;</span><br><span class="line">      <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="comment">// 第一次调用 next 方法并且把返回值保存在 ret 里面传给下一次调用</span></span><br><span class="line">        ret = gen.next(res);</span><br><span class="line">      &#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">        <span class="comment">// 如果出错了就结束</span></span><br><span class="line">        <span class="keyword">return</span> reject(e);</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="comment">// next 方法无限调用直到 done 为 true 也就是执行结束为止</span></span><br><span class="line">      next(ret);</span><br><span class="line">      <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * @param &#123;Error&#125; err</span></span><br><span class="line"><span class="comment">     * @return &#123;Promise&#125;</span></span><br><span class="line"><span class="comment">     * @api private</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">onRejected</span>(<span class="params">err</span>) </span>&#123;</span><br><span class="line">      <span class="keyword">var</span> ret;</span><br><span class="line">      <span class="keyword">try</span> &#123;</span><br><span class="line">        ret = gen.throw(err);</span><br><span class="line">      &#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">        <span class="keyword">return</span> reject(e);</span><br><span class="line">      &#125;</span><br><span class="line">      next(ret);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Get the next value in the generator,</span></span><br><span class="line"><span class="comment">     * return a promise.</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * @param &#123;Object&#125; ret</span></span><br><span class="line"><span class="comment">     * @return &#123;Promise&#125;</span></span><br><span class="line"><span class="comment">     * @api private</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">next</span>(<span class="params">ret</span>) </span>&#123;</span><br><span class="line">      <span class="comment">// 如果 done 了，说明执行结束了，Promise 成功会执行 resolve</span></span><br><span class="line">      <span class="keyword">if</span> (ret.done) <span class="keyword">return</span> resolve(ret.value);</span><br><span class="line">      <span class="comment">// 没有结束的话，就先转换成 Promise</span></span><br><span class="line">      <span class="keyword">var</span> value = toPromise.call(ctx, ret.value);</span><br><span class="line">      <span class="comment">// 判断一下是否成功转换，然后返回执行一下 -&gt; then (成功的话执行 onFullFilled，失败的话执行 onRejected)</span></span><br><span class="line">      <span class="keyword">if</span> (value &amp;&amp; isPromise(value)) <span class="keyword">return</span> value.then(onFulfilled, onRejected);</span><br><span class="line">      <span class="comment">// 转换失败就给出错误信息</span></span><br><span class="line">      <span class="keyword">return</span> onRejected(<span class="keyword">new</span> <span class="built_in">TypeError</span>(<span class="string">'You may only yield a function, promise, generator, array, or object, '</span></span><br><span class="line">        + <span class="string">'but the following object was passed: "'</span> + <span class="built_in">String</span>(ret.value) + <span class="string">'"'</span>));</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这是 co 模块最核心的函数，执行步骤大概就是</p>
+<ul>
+<li>先调用一下 gen() 返回一个生成器</li>
+<li>然后调用 onFullFilled()<ul>
+<li>调用 gen.next() 执行一段代码，得到返回值</li>
+<li>如果出错就结束，没错就继续</li>
+<li>调用自定义的 next 函数<ul>
+<li>如果已经 done 就是成功结束了就返回</li>
+<li>没有就先转换成 Promise</li>
+<li>转换成功就执行一下然后跳到 onFullFilled 继续下一次</li>
+<li>转换失败就给出错误信息</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>onFullFilled 结束，全部执行完毕</li>
+</ul>
+<p>得益于 co 模块，这样我们在 koa 中就可以不用自己调用而全部执行完生成器函数，这也就是为什么我们直接传入生成器函数就可以顺利执行的原因，利用生成器函数可以让我们用同步的写法来写异步代码，因为我们人的思维都是同步的所以用 function* 的话写代码比较爽，不过有的同学会想「既然这样为什么不直接用 async 和 await 呢？？？」</p>
+<p>！！因为我看的项目是比较早的项目，koa 那时候还不支持 async 和 await，这是 ES7 的东东，node8 才支持。不得不说 async 和 await 是真的好用，愿世上永无回调。</p>
+
       
 
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
       
     </div>
     <div class="article-info article-info-index">
@@ -182,16 +242,84 @@
       
 
       
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/12/18/spring-boot问题记录/">展开全文 >></a>
-        </p>
-      
 
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://kwm42.github.io/2019/07/11/js异步与 co 模块/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
       
       <div class="clearfix"></div>
     </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
+  
+    <a href="/2019/07/21/nodejs瞎BB/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          nodejs瞎BB
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/04/23/用vue-js做前端权限校验/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">用vue.js做前端权限校验</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
 
 <aside class="wrap-side-operation">
     <div class="mod-side-operation">
@@ -211,413 +339,14 @@
 
 
 
-
-  
-    <article id="post-Vue中json-server的使用" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/11/16/Vue中json-server的使用/">Vue中json-server的使用</a>
-    </h1>
-  
-
-        
-        <a href="/2018/11/16/Vue中json-server的使用/" class="archive-article-date">
-  	<time datetime="2018-11-16T03:21:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-11-16</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Vue 中 json-server 的使用，mock 模拟数据。</p>
-        
-          <a class="article-more-a" href="/2018/11/16/Vue中json-server的使用/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/11/16/Vue中json-server的使用/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-vuex基本使用" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/11/14/vuex基本使用/">vuex基本使用</a>
-    </h1>
-  
-
-        
-        <a href="/2018/11/14/vuex基本使用/" class="archive-article-date">
-  	<time datetime="2018-11-14T01:12:45.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-11-14</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>vuex的基本使用，Vue 的数据状态管理插件。</p>
-        
-          <a class="article-more-a" href="/2018/11/14/vuex基本使用/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/11/14/vuex基本使用/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-网络通信解析" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/07/19/网络通信解析/">网络通信解析</a>
-    </h1>
-  
-
-        
-        <a href="/2018/07/19/网络通信解析/" class="archive-article-date">
-  	<time datetime="2018-07-19T09:13:24.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-07-19</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>网络通信解析，网络模型的简述。</p>
-        
-          <a class="article-more-a" href="/2018/07/19/网络通信解析/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/07/19/网络通信解析/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Vue.js入门" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/06/07/Vue.js入门/">Vue.js 入门</a>
-    </h1>
-  
-
-        
-        <a href="/2018/06/07/Vue.js入门/" class="archive-article-date">
-  	<time datetime="2018-06-07T02:17:08.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-06-07</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Vue.js基础开发，开发环境搭建与运行。</p>
-        
-          <a class="article-more-a" href="/2018/06/07/Vue.js入门/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/06/07/Vue.js入门/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-信号量与进程互斥" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/05/27/信号量与进程互斥/">信号量与进程互斥</a>
-    </h1>
-  
-
-        
-        <a href="/2018/05/27/信号量与进程互斥/" class="archive-article-date">
-  	<time datetime="2018-05-27T09:12:53.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-27</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>信号量与进程互斥，信号量的原理与在进程之间的使用。</p>
-        
-          <a class="article-more-a" href="/2018/05/27/信号量与进程互斥/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/05/27/信号量与进程互斥/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-单功能非线性流水线的调度方案-java" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/05/13/单功能非线性流水线的调度方案-java/">单功能非线性流水线的调度方案[java]</a>
-    </h1>
-  
-
-        
-        <a href="/2018/05/13/单功能非线性流水线的调度方案-java/" class="archive-article-date">
-  	<time datetime="2018-05-13T09:13:11.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-13</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>单功能非线性流水线的调度方案，使用 Java 语言实现的模拟流水线的调度程序。</p>
-        
-          <a class="article-more-a" href="/2018/05/13/单功能非线性流水线的调度方案-java/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">操作系统</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/05/13/单功能非线性流水线的调度方案-java/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
   
   
-    <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
-    </nav>
+  
+
+  
+
+  
+
   
 
 
@@ -640,8 +369,8 @@
     <script>
 	var yiliaConfig = {
 		mathjax: false,
-		isHome: true,
-		isPost: false,
+		isHome: false,
+		isPost: true,
 		isArchive: false,
 		isTag: false,
 		isCategory: false,
