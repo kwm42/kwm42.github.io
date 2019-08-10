@@ -6,21 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://kwm42.github.io">
-  <title>vuex基本使用 | KWM&#39;s BLOG</title>
+  <title>仿网易rem移动端适配 | KWM&#39;s BLOG</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="vuex的基本使用，Vue 的数据状态管理插件。">
+  <meta name="description" content="模仿网易移动站自适应大小">
+<meta name="keywords" content="css 移动端">
 <meta property="og:type" content="article">
-<meta property="og:title" content="vuex基本使用">
-<meta property="og:url" content="http://kwm42.github.io/2018/11/14/vuex基本使用/index.html">
+<meta property="og:title" content="仿网易rem移动端适配">
+<meta property="og:url" content="http://kwm42.github.io/2019/07/30/仿网易rem移动端适配/index.html">
 <meta property="og:site_name" content="KWM&#39;s BLOG">
-<meta property="og:description" content="vuex的基本使用，Vue 的数据状态管理插件。">
+<meta property="og:description" content="模仿网易移动站自适应大小">
 <meta property="og:locale" content="zh_CN en_US">
-<meta property="og:image" content="https://github.com/kwm42/markdownPictures/raw/master/vuex/vuex_devtool.png">
-<meta property="og:updated_time" content="2019-03-16T11:07:44.708Z">
+<meta property="og:updated_time" content="2019-08-10T07:13:03.212Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="vuex基本使用">
-<meta name="twitter:description" content="vuex的基本使用，Vue 的数据状态管理插件。">
-<meta name="twitter:image" content="https://github.com/kwm42/markdownPictures/raw/master/vuex/vuex_devtool.png">
+<meta name="twitter:title" content="仿网易rem移动端适配">
+<meta name="twitter:description" content="模仿网易移动站自适应大小">
   
     <link rel="alternative" href="/atom.xml" title="KWM&#39;s BLOG" type="application/atom+xml">
   
@@ -152,85 +151,44 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-vuex基本使用" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-仿网易rem移动端适配" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      vuex基本使用
+      仿网易rem移动端适配
     </h1>
   
 
         
-        <a href="/2018/11/14/vuex基本使用/" class="archive-article-date">
-  	<time datetime="2018-11-14T01:12:45.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-11-14</time>
+        <a href="/2019/07/30/仿网易rem移动端适配/" class="archive-article-date">
+  	<time datetime="2019-07-30T07:19:03.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-07-30</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>vuex的基本使用，Vue 的数据状态管理插件。</p>
+        <p>模仿网易移动站自适应大小</p>
 <a id="more"></a>
-<h3 id="1-首先构建一个-vue-应用"><a href="#1-首先构建一个-vue-应用" class="headerlink" title="1.首先构建一个 vue 应用"></a>1.首先构建一个 vue 应用</h3><p>参考<a href="https://kwm42.github.io/2018/06/07/vue-js%E5%9F%BA%E7%A1%80%E5%BC%80%E5%8F%91/">这篇文章</a>，从安装到使用 vue-cli 构建的过程都记录下来的。</p>
-<h3 id="2-安装-Vuex"><a href="#2-安装-Vuex" class="headerlink" title="2.安装 Vuex"></a>2.安装 Vuex</h3><p>这里只讨论使用 vue-cli 构建的应用，附上我的运行环境：</p>
-<p>node — v10.6.0<br>vue — 2.9.6<br>npm — 6.1.0</p>
+<p>模仿网易的手机版网站学习一下关于 rem 的移动端适配方案，其实关于网易和淘宝的移动布局文章网络上有很多，就记录下自己的学习过程吧。</p>
+<p>先明确一个概念，px/em/rem 这三个分别是什么东东，px 应该很熟悉，也就是「像素」对于某一台设备来说，px 的大小是固定的，取决于你的屏幕上一个像素有多大，em 是 element size 的意思，也就是元素的大小，它的值是相对于父级元素来说的，例如父元素的 font-size 是 20px，那么 1em 对应的大小就是 20px，1.5em 就是 30px，而 rem 和 em 类似，是 root element size 的意思，也就是相对于根元素来计算大小，例如 html 元素的 font-size 是 10px，那么 1rem所对应的值就是 10px，需要注意，em 单位的值是会叠加的，也就是说如果有一个元素的 font-size 是 10px，子元素为 2em，那么子元素是 20px，子元素的子元素也就是孙子元素为 2em，那么值为 10 <em> 2 </em> 2 = 40px，所以 em 作为单位会有大小不可控的特点，而 rem 的基准值是一定的，不会有这种现象。</p>
+<p>说下基本思路，我们刚刚说过 rem 是对于根元素来计算大小，为了保证页面布局在不同尺寸的设备上都能有相同的显示效果，那么肯定是不能使用 px 这种单位的，我们利用 rem 的特点，可以保证所有元素相对于根元素的大小是一样的，这时候对于不同的设备，只要改变一下根元素的大小就可以让元素的比例和效果在不同设备上一致了。</p>
+<p>例如在 350 宽度分辨率的设备上，把横向平均分成 100 份，那么每一份的宽度是 350 / 100 = 3.5，对于这个计算可以利用 js 来实现，我们就可以设置 HTML 的 font-size 为 3.5px，也就是 1rem，整个 HTML 的宽度就是 100rem，然后再页面上有个 button 宽度为 50%，那么我们就可以设置 button 的 width 为 50rem，这样在不同的设备例如另一台 414 分辨率的机器上，1rem = 4.14px，50 rem = 207px，一样是一半的宽度，还是直接来看看代码吧。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">computeRem</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> width = <span class="built_in">window</span>.innerWidth;</span><br><span class="line">    <span class="keyword">let</span> fontSize = width / <span class="number">10</span> + <span class="string">'px'</span>;</span><br><span class="line">    <span class="built_in">document</span>.querySelector(<span class="string">'html'</span>).style.fontSize = fontSize;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">window</span>.onload = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    computeRem();</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">window</span>.addEventListener(<span class="string">'resize'</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    computeRem();</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>以上代码定义了一个计算 rem 的函数，这里我分成了 10 等分，在屏幕大小改变的时候就重新计算一下 rem 值，这样缩放屏幕也有相同的效果。</p>
+<p>例如要实现这样一个目录 =&gt; <a href="https://3g.163.com/touch/#/" target="_blank" rel="noopener">网易</a></p>
+<p>html 结构：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>css</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>每行显示 5 个 item，那么每个 item 的宽度就可以设置为 2rem （全部是10 rem），这样就占据了 1/5 个屏幕，也就刚好能放下五个 item，对于字体大小的样式也可以用 rem 给字体设置，这样字体大小就会跟着变了。</p>
 <blockquote>
-<p>“dependencies”: {<br>“vue”: “^2.5.2”,<br>“vue-router”: “^3.0.1”<br>}</p>
+<p><small>关于 li 横向排列这里有一个小坑，当 li 横向排列的时候，中间会有一点间隔，即使你设置了 margin，padding 为 0 也没有用，因为和他们没关系，是因为把 li 之间的换行空白符当成字符解析了，所以有一点小间隔，解决方法是 ul 的 font-size 设为0，然后重新设置 li 的 font-size</small></p>
 </blockquote>
-<p>执行如下命令</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">install vuex --save</span><br></pre></td></tr></table></figure>
-<p>成功后再查看一下 package.json 可以看到</p>
-<blockquote>
-<p>“dependencies”: {<br>“vue”: “^2.5.2”,<br>“vue-router”: “^3.0.1”,<br>“vuex”: “^3.0.1”<br>}</p>
-</blockquote>
-<p>这样就安装好了</p>
-<h3 id="3-在项目中引入-vuex"><a href="#3-在项目中引入-vuex" class="headerlink" title="3.在项目中引入 vuex"></a>3.在项目中引入 vuex</h3><ul>
-<li>1.在项目根目录 src 下新建一个 store 文件夹，然后在里面新建一个 store.js 用来存放我们的 uex 数据和操作。</li>
-<li><p>2.在 store.js 里面添加如下代码</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> Vuex <span class="keyword">from</span> <span class="string">'vuex'</span></span><br><span class="line"><span class="keyword">import</span> Vue <span class="keyword">from</span> <span class="string">'vue'</span></span><br><span class="line"></span><br><span class="line">Vue.use(Vuex);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> store = <span class="keyword">new</span> Vuex.Store(&#123;</span><br><span class="line">state: &#123;</span><br><span class="line">name: <span class="string">"张三"</span>,</span><br><span class="line">age: <span class="number">20</span></span><br><span class="line">&#125;,</span><br><span class="line">getters: &#123;</span><br><span class="line">name(state) &#123;</span><br><span class="line"><span class="keyword">return</span> state.name;</span><br><span class="line">&#125;,</span><br><span class="line">age(state) &#123;</span><br><span class="line"><span class="keyword">return</span> state.age;</span><br><span class="line">&#125;</span><br><span class="line">&#125;,</span><br><span class="line">mutations: &#123;</span><br><span class="line">set_name(state, name) &#123;</span><br><span class="line">state.name = name;</span><br><span class="line">&#125;,</span><br><span class="line">set_age(state, age) &#123;</span><br><span class="line">state.age = age;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> store;</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<ul>
-<li>3.修改 main.js 中的内容</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">import store from &apos;./store/store.js&apos;</span><br><span class="line">new Vue(&#123;</span><br><span class="line">  el: &apos;#app&apos;,</span><br><span class="line">  router,</span><br><span class="line">  store, // 添加仓库</span><br><span class="line">  components: &#123; App &#125;,</span><br><span class="line">  template: &apos;&lt;App/&gt;&apos;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-<p>然后在浏览器中就可以看到 vuex 成功引入了：<br><img src="https://github.com/kwm42/markdownPictures/raw/master/vuex/vuex_devtool.png" alt="img"></p>
-<h3 id="4-vuex-各个部分是什么用的？"><a href="#4-vuex-各个部分是什么用的？" class="headerlink" title="4.vuex 各个部分是什么用的？"></a>4.vuex 各个部分是什么用的？</h3><ul>
-<li>state</li>
-</ul>
-<p>这是你存放数据的地方，在你的应用中，组件之间共享的数据就可以放在这里，就像一个仓库一样。后续可以通过 state 来获取你的应用数据。</p>
-<p>比如这样：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">methods:&#123;</span><br><span class="line">    get_name:function () &#123;</span><br><span class="line">      alert(this.$store.state.name);//会弹出‘张三’</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>getters</li>
-</ul>
-<p>相当于 get 、set 方法的 get ，会返回state中的数据，我们一般不直接通过 state 来获取和设置数据，那样代码会很难看，所以通过 getters 来获取数据。</p>
-<p>例子：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">methods: &#123;</span><br><span class="line">      get_name: function () &#123;</span><br><span class="line">        alert(this.$store.getters.name);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<p>效果和上面是一样的。</p>
-<ul>
-<li>mutations</li>
-</ul>
-<p>和 getters 相反，他相当于 set 方法，但是注意，不能想上面那样直接通过 mutations 来调用，而是通过 commit 方法，commit 意思就是提交，mutations 更像是注册事件，而通过 commit 方法就可以来 「提交并处理」，所以，如果我们要给修改属性 name，name我们可以这么做：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">this.$store.commit(&apos;set_name&apos;,&apos;李四&apos;);</span><br></pre></td></tr></table></figure>
-<p>其中 ‘set_name’ 是函数名，而 ‘李四’ 是参数，如果没有参数的话也可以不写。</p>
-<p>还可以通过使用对象风格的提交方式，对象要包含 type 表示提交的函数：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">this.$store.commit(&#123;</span><br><span class="line">	type:&apos;set_name&apos;,</span><br><span class="line">	name:&apos;李四&apos;</span><br><span class="line">&#125;);</span><br><span class="line">//由于 name 是对象的属性，要修改 store.js 里的 set_name 方法</span><br><span class="line">//这里整个对象都会作为载荷传给 mutations 。</span><br><span class="line">set_name(state, payload) &#123;</span><br><span class="line">	state.name = payload.name;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>actions</li>
-</ul>
-<p>action 类似于 mutation，不同在于：</p>
-<ul>
-<li>action 提交的是 mutation，而不是直接变更状态。</li>
-<li><p>action 可以包含任意异步操作。</p>
-</li>
-<li><p>modules</p>
-</li>
-</ul>
-<p>这是数据子模块，如果是普通的应用应该用不上，里面的写法和 store 是一样的，都包含 state、getters、mutations 和 actions 。</p>
+<h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><p>利用 rem 对比其他长度单位更加绝对的特点，计算好元素相对于屏幕的比例尺寸，然后通过 js 计算出不同的设备对应的 rem 长度值是多少，接下来根据比例用 rem 做单位就好了。</p>
 
       
 
@@ -260,6 +218,17 @@
     <div class="article-info article-info-index">
       
       
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">css 移动端</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
       
 
       
@@ -310,7 +279,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://kwm42.github.io/2018/11/14/vuex基本使用/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=http://kwm42.github.io/2019/07/30/仿网易rem移动端适配/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -324,18 +293,18 @@
   
 <nav id="article-nav">
   
-    <a href="/2018/11/16/Vue中json-server的使用/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2019/08/09/cors/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          Vue中json-server的使用
+          cors
         
       </div>
     </a>
   
   
-    <a href="/2018/07/19/网络通信解析/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">网络通信解析</div>
+    <a href="/2019/07/25/canvas粒子效果/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">canvas粒子效果</div>
       <i class="icon-circle-right"></i>
     </a>
   
