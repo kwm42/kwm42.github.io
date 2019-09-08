@@ -6,15 +6,32 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://kwm42.github.io">
-  <title>Archives: 2019/4 | KWM&#39;s BLOG</title>
+  <title>‘[译]当你输入url的时候到底发生了什么’ | KWM&#39;s BLOG</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="KWM&#39;s BLOG">
-<meta property="og:url" content="http://kwm42.github.io/archives/2019/04/index.html">
+  <meta name="description" content="原文：What really happens when you navigate to a URL 最近刚好看到相关的内容就试着自己翻译一下，加深印象。 当你输入 URL 的时候到底发生了什么">
+<meta name="keywords" content="HTTP">
+<meta property="og:type" content="article">
+<meta property="og:title" content="‘[译]当你输入url的时候到底发生了什么’">
+<meta property="og:url" content="http://kwm42.github.io/2019/09/08/译-当你输入url的时候到底发生了什么/index.html">
 <meta property="og:site_name" content="KWM&#39;s BLOG">
+<meta property="og:description" content="原文：What really happens when you navigate to a URL 最近刚好看到相关的内容就试着自己翻译一下，加深印象。 当你输入 URL 的时候到底发生了什么">
 <meta property="og:locale" content="zh_CN en_US">
+<meta property="og:image" content="http://igoro.com/wordpress/wp-content/uploads/2010/02/image4.png">
+<meta property="og:image" content="http://igoro.com/wordpress/wp-content/uploads/2010/02/image13.png">
+<meta property="og:image" content="http://igoro.com/wordpress/wp-content/uploads/2010/02/500pxAn_example_of_theoretical_DNS_recursion_svg.png">
+<meta property="og:image" content="http://igoro.com/wordpress/wp-content/uploads/2010/02/image22.png">
+<meta property="og:image" content="http://igoro.com/wordpress/wp-content/uploads/2010/02/image8.png">
+<meta property="og:image" content="http://igoro.com/wordpress/wp-content/uploads/2010/02/image23.png">
+<meta property="og:image" content="http://igoro.com/wordpress/wp-content/uploads/2010/02/image9.png">
+<meta property="og:image" content="http://igoro.com/wordpress/wp-content/uploads/2010/02/image10.png">
+<meta property="og:image" content="http://igoro.com/wordpress/wp-content/uploads/2010/02/image6.png">
+<meta property="og:image" content="http://igoro.com/wordpress/wp-content/uploads/2010/02/image11.png">
+<meta property="og:image" content="http://igoro.com/wordpress/wp-content/uploads/2010/02/image6.png">
+<meta property="og:updated_time" content="2019-09-08T05:32:43.701Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="KWM&#39;s BLOG">
+<meta name="twitter:title" content="‘[译]当你输入url的时候到底发生了什么’">
+<meta name="twitter:description" content="原文：What really happens when you navigate to a URL 最近刚好看到相关的内容就试着自己翻译一下，加深印象。 当你输入 URL 的时候到底发生了什么">
+<meta name="twitter:image" content="http://igoro.com/wordpress/wp-content/uploads/2010/02/image4.png">
   
     <link rel="alternative" href="/atom.xml" title="KWM&#39;s BLOG" type="application/atom+xml">
   
@@ -146,60 +163,268 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-译-当你输入url的时候到底发生了什么" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2019" class="archive-year">2019</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/04/23/用vue-js做前端权限校验/" class="archive-article-date">
-  	<time datetime="2019-04-23T11:05:07.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-04-23</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/04/23/用vue-js做前端权限校验/">用vue.js做前端权限校验</a>
+    <h1 class="article-title" itemprop="name">
+      ‘[译]当你输入url的时候到底发生了什么’
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+        
+        <a href="/2019/09/08/译-当你输入url的时候到底发生了什么/" class="archive-article-date">
+  	<time datetime="2019-09-08T05:26:07.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-09-08</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>原文：<a href="http://igoro.com/archive/what-really-happens-when-you-navigate-to-a-url/" target="_blank" rel="noopener">What really happens when you navigate to a URL</a></p>
+<p>最近刚好看到相关的内容就试着自己翻译一下，加深印象。</p>
+<p><strong>当你输入 URL 的时候到底发生了什么</strong></p>
+<a id="more"></a>
+<h2 id="1，你在浏览器输入-URL"><a href="#1，你在浏览器输入-URL" class="headerlink" title="1，你在浏览器输入 URL"></a>1，你在浏览器输入 URL</h2><p>从这里开始</p>
+<p><img src="http://igoro.com/wordpress/wp-content/uploads/2010/02/image4.png" alt="image"></p>
+<h2 id="2-浏览器查找域名的-IP-地址"><a href="#2-浏览器查找域名的-IP-地址" class="headerlink" title="2.浏览器查找域名的 IP 地址"></a>2.浏览器查找域名的 IP 地址</h2><p><img src="http://igoro.com/wordpress/wp-content/uploads/2010/02/image13.png" alt="image"></p>
+<p>导航的第一步是找出域名对应的 IP 地址。DNS 查找过程如下：</p>
+<ul>
+<li><strong>浏览器缓存</strong> - 浏览器有时候会缓存 DNS 记录，有趣的是，操作系统不会告诉浏览器每个 DNS 记录的存活时间「time-to-live」，所以浏览器会在固定的时间缓存他们（不同的浏览器不同，2 - 30 min）</li>
+<li><strong>操作系统缓存</strong> - 如果浏览器缓存不包含目标记录，浏览器会系统调用（在window 下是 gethostbyname）。操作系统有自己的缓存。</li>
+<li><strong>路由缓存</strong> - 请求继续到你的路由器哪里，他也有自己的缓存。</li>
+<li><strong>IPS DNS 缓存</strong> - 下一个检查的地方是 ISP DNS 缓存服务{译者: 不太懂是什么东西}，当然，也有缓存。</li>
+<li><strong>递归查询</strong> - 你的网络服务提供商（ISP’s DNS server）开始递归查询，从根域名服务器，到顶级的 com 域名服务器，到 Facebook 的域名服务器，正常情况下，DNS 服务会缓存 com 域名服务器，所以命中根域名服务器不是必须的。</li>
+</ul>
+<p>这里有一个 DNS 递归查询的图表：</p>
+<p><img src="http://igoro.com/wordpress/wp-content/uploads/2010/02/500pxAn_example_of_theoretical_DNS_recursion_svg.png" alt="500px-An_example_of_theoretical_DNS_recursion_svg"></p>
+<blockquote>
+<p>对于 DNS 来说，像 Wikipedia.org 和 Facebook.org 这样的完整域名可能会映射到同样的 IP 地址，这是一件令人担心的事情。幸运的是，有一些办法可以减少瓶颈{译者：？？？}</p>
+</blockquote>
+<blockquote>
+<p>许多的 DNS 服务使用 「anycast」来实现 DNS 查找的高可用和低延迟。</p>
+</blockquote>
+<h2 id="3、浏览器给-web-服务器发送一个-HTTP-请求"><a href="#3、浏览器给-web-服务器发送一个-HTTP-请求" class="headerlink" title="3、浏览器给 web 服务器发送一个 HTTP 请求"></a>3、浏览器给 web 服务器发送一个 HTTP 请求</h2><p><img src="http://igoro.com/wordpress/wp-content/uploads/2010/02/image22.png" alt="image"></p>
+<p>你能很清楚的知道 Facebook 的主页不会从浏览器缓存里面得到因为动态网页很快或者说立刻就过期了。</p>
+<p>所以，浏览器会给 Facebook 的服务器发送这样的请求</p>
+<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">GET</span> <span class="string">http://facebook.com/</span> HTTP/1.1</span><br><span class="line"><span class="attribute">Accept</span>: application/x-ms-application, image/jpeg, application/xaml+xml, [...]</span><br><span class="line"><span class="attribute">User-Agent</span>: Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; WOW64; [...]</span><br><span class="line"><span class="attribute">Accept-Encoding</span>: gzip, deflate</span><br><span class="line"><span class="attribute">Connection</span>: Keep-Alive</span><br><span class="line"><span class="attribute">Host</span>: facebook.com</span><br><span class="line"><span class="attribute">Cookie</span>: datr=1265876274-[...]; locale=en_US; lsd=WW[...]; c_user=2101[...]</span><br></pre></td></tr></table></figure>
+<p>GET 请求指定要获取 URL 为 “<a href="http://facebook.com&quot;，浏览器指定它自己（User-Agent" target="_blank" rel="noopener">http://facebook.com&quot;，浏览器指定它自己（User-Agent</a> 头部字段），以及它要接受的响应的类型（<strong>Accept</strong> 或者 <strong>Accept-Encoding</strong> 头部字段）。<strong>Connection </strong> 头部字段告诉 server 对以后的请求都保持 TCP 连接打开的状态。</p>
+<p>请求也包含浏览器在这个域名下的 <strong>cookie</strong>，你应该知道，cookie 是一个用于在不同的请求间跟踪状态的键值对。所以 cookie 保存登录的用户名，还有服务器分配的密码，一些用户的设置等等。cookie 会被保存在客户端的一个文本文件里，并且每个请求都会发到服务器。</p>
+<blockquote>
+<p>有很多工具可以让你查看原始的 HTTP 请求和对应的响应。我最喜欢的查看 HTTP 请求的工具是 fiddler，但也有许多其他的工具（例如 firebug），这些工具在优化网站的时候有很大的帮助。</p>
+</blockquote>
+<blockquote>
+<p>除了 GET 请求外，另一种你很熟悉的请求是 POST 请求，一般用于提交表单，GET 请求通过 URL 发送参数（例如 <a href="http://robozzle.com/puzzle.aspx**?id=85**），POST" target="_blank" rel="noopener">http://robozzle.com/puzzle.aspx**?id=85**），POST</a> 请求通过请求体（request body）发送它的参数，也就是再去请求头下面的数据。</p>
+</blockquote>
+<blockquote>
+<p>在 URL “<a href="http://facebook.com/”" target="_blank" rel="noopener">http://facebook.com/”</a> 后面的斜线是很重要的，在这种情况下，浏览器可以安全的加上斜杠，对于 URL 例如 <a href="http://example.com/folderOrFile，浏览器不能自动的加上一个斜线，因为他不能清楚的知道" target="_blank" rel="noopener">http://example.com/folderOrFile，浏览器不能自动的加上一个斜线，因为他不能清楚的知道</a> folderOrFile 是一个文件或者是文件夹，在这种情况下，浏览器会访问不带斜线的 URL，然后 服务器会返回一个重定向，导致一次不必要的请求来回。</p>
+</blockquote>
+<h2 id="4-Facebook-服务器返回一个永久的链接"><a href="#4-Facebook-服务器返回一个永久的链接" class="headerlink" title="4.Facebook 服务器返回一个永久的链接"></a>4.Facebook 服务器返回一个永久的链接</h2><p><img src="http://igoro.com/wordpress/wp-content/uploads/2010/02/image8.png" alt="image"></p>
+<p>这是 Facebook 服务器发回给浏览器请求的响应</p>
+<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">HTTP/1.1 <span class="number">301</span> Moved Permanently</span><br><span class="line"><span class="attribute">Cache-Control</span>: private, no-store, no-cache, must-revalidate, post-check=0,</span><br><span class="line">      pre-check=0</span><br><span class="line"><span class="attribute">Expires</span>: Sat, 01 Jan 2000 00:00:00 GMT</span><br><span class="line"><span class="attribute">Location</span>: http://www.facebook.com/</span><br><span class="line"><span class="attribute">P3P</span>: CP="DSP LAW"</span><br><span class="line"><span class="attribute">Pragma</span>: no-cache</span><br><span class="line"><span class="attribute">Set-Cookie</span>: made_write_conn=deleted; expires=Thu, 12-Feb-2009 05:09:50 GMT;</span><br><span class="line">      path=/; domain=.facebook.com; httponly</span><br><span class="line"><span class="attribute">Content-Type</span>: text/html; charset=utf-8</span><br><span class="line"><span class="attribute">X-Cnection</span>: close</span><br><span class="line"><span class="attribute">Date</span>: Fri, 12 Feb 2010 05:09:51 GMT</span><br><span class="line"><span class="attribute">Content-Length</span>: 0</span><br></pre></td></tr></table></figure>
+<p>服务器返回一个 301 永久重定向来告诉浏览器去访问 “<a href="http://www.facebook.com/”" target="_blank" rel="noopener">http://www.facebook.com/”</a> 而不是 “<a href="http://facebook.com/”" target="_blank" rel="noopener">http://facebook.com/”</a>.</p>
+<blockquote>
+<p>关于服务器坚持返回重定向而不是直接响应用户想要的网页有一些有趣的原因。</p>
+<p>其中一个原因是搜索引擎排名。如果有两个 URL 地址对应的是相同的页面分别是 <a href="http://www.igoro.com/" target="_blank" rel="noopener">http://www.igoro.com/</a> and <a href="http://igoro.com/，搜索引擎会认为他们是两个不同的网站，每个都会有更少的链接并且导致更低的排名，搜索引擎理解" target="_blank" rel="noopener">http://igoro.com/，搜索引擎会认为他们是两个不同的网站，每个都会有更少的链接并且导致更低的排名，搜索引擎理解</a> 301 永久重定向，并且会把不同来源的链接都联合到一个排名。</p>
+<p>并且，对应相同内容的不同 URL 并不利于缓存，当一部分内容有不同的名字，他将会在缓存里出现很多次。</p>
+</blockquote>
+<h2 id="5-浏览器重定向"><a href="#5-浏览器重定向" class="headerlink" title="5.浏览器重定向"></a>5.浏览器重定向</h2><p><img src="http://igoro.com/wordpress/wp-content/uploads/2010/02/image23.png" alt="image"></p>
+<p>浏览器现在知道 “<a href="http://facebook.com/&quot;" target="_blank" rel="noopener">http://facebook.com/&quot;</a> 是一个正确的 URL，所以他发送了另外一个 GET 请求</p>
+<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">GET</span> <span class="string">http://www.facebook.com/</span> HTTP/1.1</span><br><span class="line"><span class="attribute">Accept</span>: application/x-ms-application, image/jpeg, application/xaml+xml, [...]</span><br><span class="line"><span class="attribute">Accept-Language</span>: en-US</span><br><span class="line"><span class="attribute">User-Agent</span>: Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; WOW64; [...]</span><br><span class="line"><span class="attribute">Accept-Encoding</span>: gzip, deflate</span><br><span class="line"><span class="attribute">Connection</span>: Keep-Alive</span><br><span class="line"><span class="attribute">Cookie</span>: lsd=XW[...]; c_user=21[...]; x-referer=[...]</span><br><span class="line"><span class="attribute">Host</span>: www.facebook.com</span><br></pre></td></tr></table></figure>
+<p>这意味着头部和第一个请求是一样的。</p>
+<h2 id="6-服务器处理请求"><a href="#6-服务器处理请求" class="headerlink" title="6.服务器处理请求"></a>6.服务器处理请求</h2><p><img src="http://igoro.com/wordpress/wp-content/uploads/2010/02/image9.png" alt="image"></p>
+<p>服务器会收到一个 GET 请求，处理它，并且返回一个响应。</p>
+<p>这看起来是一个很直接的任务，但是事实上其中发生了很多有趣的事情 - 即使在我的博客这么简单的网站上更不要说像 Facebook 这么一个复杂庞大的网站了。</p>
+<ul>
+<li><p>web 服务器软件</p>
+<p>web 服务器软件（例如 IIS 和 Apache）收到 HTTP 请求并且决定哪一个请求处理程序会被执行来处理这个请求，请求处理者是一段程序（ASP.NET，PHP，Ruby 等等）读取请求并且生成响应的 HTML。</p>
+<p>一个简单的情况，请求处理程序可以被存放在和 URL 的结构映射的同样结构的文件里，所以举个栗子 <a href="http://example.com/folder1/page1.aspx" target="_blank" rel="noopener">http://example.com/folder1/page1.aspx</a> 将会被映射到 /httpdocs/folder1/page1.aspx。可以配置 web 服务器软件然后 URLs 可以被手动的映射到请求处理者，所以 page1.aspx 这个公共的 URL 可以是 <a href="http://example.com/folder1/page1。" target="_blank" rel="noopener">http://example.com/folder1/page1。</a></p>
+</li>
+<li><p>请求处理</p>
+<p>请求处理者读取请求，它的参数和 cookie，他将会读取并且可能会更新一些存储在服务器的数据。然后，请求处理程序会生成 HTML 响应。</p>
+</li>
+</ul>
+<h2 id="7-服务器返回一个-HTML-响应"><a href="#7-服务器返回一个-HTML-响应" class="headerlink" title="7.服务器返回一个 HTML 响应"></a>7.服务器返回一个 HTML 响应</h2><p><img src="http://igoro.com/wordpress/wp-content/uploads/2010/02/image10.png" alt="image"></p>
+<p>这是服务器生成并且返回的响应</p>
+<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">HTTP/1.1 <span class="number">200</span> OK</span><br><span class="line"><span class="attribute">Cache-Control</span>: private, no-store, no-cache, must-revalidate, post-check=0,</span><br><span class="line">    pre-check=0</span><br><span class="line"><span class="attribute">Expires</span>: Sat, 01 Jan 2000 00:00:00 GMT</span><br><span class="line"><span class="attribute">P3P</span>: CP="DSP LAW"</span><br><span class="line"><span class="attribute">Pragma</span>: no-cache</span><br><span class="line"><span class="attribute">Content-Encoding</span>: gzip</span><br><span class="line"><span class="attribute">Content-Type</span>: text/html; charset=utf-8</span><br><span class="line"><span class="attribute">X-Cnection</span>: close</span><br><span class="line"><span class="attribute">Transfer-Encoding</span>: chunked</span><br><span class="line"><span class="attribute">Date</span>: Fri, 12 Feb 2010 09:05:55 GMT</span><br><span class="line"></span><br><span class="line"><span class="attribute">2b3</span></span><br><span class="line"><span class="attribute">��������T�n�@����[...]</span></span><br></pre></td></tr></table></figure>
+<p>整个响应有 36 kb，结尾的一大堆数据我整理了一下。</p>
+<p><strong>Content-Encoding</strong> 这个头部字段告诉浏览器响应体是通过 gzip 算法压缩的。在解压缩之后，你将会看到期望的 HTML。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"   </span></span><br><span class="line"><span class="meta">      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">xmlns</span>=<span class="string">"http://www.w3.org/1999/xhtml"</span> <span class="attr">xml:lang</span>=<span class="string">"en"</span> </span></span><br><span class="line"><span class="tag">      <span class="attr">lang</span>=<span class="string">"en"</span> <span class="attr">id</span>=<span class="string">"facebook"</span> <span class="attr">class</span>=<span class="string">" no_js"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">"Content-type"</span> <span class="attr">content</span>=<span class="string">"text/html; charset=utf-8"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">"Content-language"</span> <span class="attr">content</span>=<span class="string">"en"</span> /&gt;</span></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>除了压缩之外，头部还指定了是否以及如何来缓存页面，设置的 cookie，隐私信息等等。</p>
+<blockquote>
+<p>注意到头部设置了 <strong>Content-Type</strong> 为 <strong>text/html</strong>，这个头部告诉浏览器去把响应渲染成 HTML，而不是当成文件下载。浏览器会根据这个头部来决定怎么解析响应，但是也会根据其他因素来考虑，比如 URL 的扩展名。</p>
+</blockquote>
+<h2 id="8-浏览器开始渲染-HTML"><a href="#8-浏览器开始渲染-HTML" class="headerlink" title="8.浏览器开始渲染 HTML"></a>8.浏览器开始渲染 HTML</h2><p>甚至在浏览器收到完整 HTML 文档之前，就开始渲染网站了。</p>
+<p><img src="http://igoro.com/wordpress/wp-content/uploads/2010/02/image6.png" alt="image"></p>
+<h2 id="9-浏览器发送对嵌入在-HTML-里的资源的请求"><a href="#9-浏览器发送对嵌入在-HTML-里的资源的请求" class="headerlink" title="9.浏览器发送对嵌入在 HTML 里的资源的请求"></a>9.浏览器发送对嵌入在 HTML 里的资源的请求</h2><p><img src="http://igoro.com/wordpress/wp-content/uploads/2010/02/image11.png" alt="image"></p>
+<p>当浏览器渲染 HTML 的时候，他会注意到那些需要请求其他 URLs 的标签。浏览器会对这些文件一一发起 GET 请求来获取资源。</p>
+<p>这是我浏览 facebook.com 时收到的一些 URLs。</p>
+<ul>
+<li><strong>Images</strong><a href="http://static.ak.fbcdn.net/rsrc.php/z12E0/hash/8q2anwu7.gif" target="_blank" rel="noopener">http://static.ak.fbcdn.net/rsrc.php/z12E0/hash/8q2anwu7.gif</a><br><a href="http://static.ak.fbcdn.net/rsrc.php/zBS5C/hash/7hwy7at6.gif" target="_blank" rel="noopener">http://static.ak.fbcdn.net/rsrc.php/zBS5C/hash/7hwy7at6.gif</a><br>…</li>
+<li><strong>CSS style sheets</strong><a href="http://static.ak.fbcdn.net/rsrc.php/z448Z/hash/2plh8s4n.css" target="_blank" rel="noopener">http://static.ak.fbcdn.net/rsrc.php/z448Z/hash/2plh8s4n.css</a><br><a href="http://static.ak.fbcdn.net/rsrc.php/zANE1/hash/cvtutcee.css" target="_blank" rel="noopener">http://static.ak.fbcdn.net/rsrc.php/zANE1/hash/cvtutcee.css</a><br>…</li>
+<li><strong>JavaScript files</strong><br><a href="http://static.ak.fbcdn.net/rsrc.php/zEMOA/hash/c8yzb6ub.js" target="_blank" rel="noopener">http://static.ak.fbcdn.net/rsrc.php/zEMOA/hash/c8yzb6ub.js</a><br><a href="http://static.ak.fbcdn.net/rsrc.php/z6R9L/hash/cq2lgbs8.js" target="_blank" rel="noopener">http://static.ak.fbcdn.net/rsrc.php/z6R9L/hash/cq2lgbs8.js</a><br>…</li>
+</ul>
+<p>以上每一个 URLs 都会走和 HTML 页面相似的流程。所以，浏览器会查找 DNS 域名，给 URL 发送请求，重定向等等。</p>
+<p>可是，静态文件 - 不像动态页面 - 允许浏览器去缓存。一些文件可能会从缓存中拿到，根本没有连接服务器。由于返回的响应中包含一个 Expires 头部字段浏览器知道要保存一个文件多久的时间。除此之外，每个响应可能会包含一个 ETag 头部他就像是一个版本号一样 - 如果浏览器发现一个文件的版本号已经存在了，那么他就会立即停止传输。</p>
+<blockquote>
+<p>你能猜想一下 URLs 里的 “<strong>fbcdn.net</strong>“ 代表什么吗？一个回答是他意味着 “Facebook 内容分发网络”。Facebook 使用内容分发网络（CDN）来提供静态内容 - 图片，样式表和 JavaScript 文件。所以，文件会被拷贝到很多机器上。</p>
+<p>静态文件经常代表了一个网站的大部分带宽使用，并且可以在 CDN 之间很容易的复制，网站经常使用第三方的CDN 而不是自己弄一个。举个栗子，Facebook 的静态文件是在 Akamai，最大的 CDN 提供方上。</p>
+<p>一个示例，当你尝试 ping static.ak.fbcdn.net 的时候，你将会从 akamai.net 的服务器上得到响应，而且，有趣的是，如果你 ping 一个 URL 很多次，你可能会得到来自不同服务器的响应，这个场景背后发生了负载均衡。</p>
+</blockquote>
+<h2 id="10-浏览器发送后续的异步（AJAX）请求"><a href="#10-浏览器发送后续的异步（AJAX）请求" class="headerlink" title="10. 浏览器发送后续的异步（AJAX）请求"></a>10. 浏览器发送后续的异步（AJAX）请求</h2><p>在 web 2.0 时代，客户端在页面渲染后还是继续和服务器交流。</p>
+<p><img src="http://igoro.com/wordpress/wp-content/uploads/2010/02/image6.png" alt="image"></p>
+<p>例如，当你的朋友上线或者下线的时候 Facebook 会持续更新你的列表，JavaScript 会在你的浏览器里面执行去给服务器发送异步请求来更新你的已登录朋友列表。异步请求是程序构造 GET 或 POST 请求去请求特定的 URL。在Facebook 的例子里，客户端发送 POST 请求到 <a href="http://www.facebook.com/ajax/chat/buddy_list.php" target="_blank" rel="noopener">http://www.facebook.com/ajax/chat/buddy_list.php</a> 来获取那些你在线好友的列表。</p>
+<p>这种模式有时认为是 “AJAX”，意味着 “异步 JavaScript 和 XML” （Asynchronous JavaScript And XML），即使关于为什么服务器要把响应格式化成 xml 没有特别的原因。例如，Facebook 对于异步请求返回 JavaScript 片段。</p>
+<blockquote>
+<p>还有，fiddler 工具可以让你看到浏览器发送的异步请求。事实上，你不仅仅可以被动的观察你发送的请求，而且你还可以修改和重新发送。事实上，这些容易“欺骗”的 AJAX 会给带有计分板的在线游戏开发者造成很多麻烦。</p>
+</blockquote>
+<blockquote>
+<p>Facebook 聊天有个 AJAX 相关的有趣的问题：从服务器向客户端发送数据。因为 HTTP 是一个 请求-响应 的协议，所以聊天服务器不能给客户端推送新消息。相反，客户端不得不每间隔几秒就去服务器轮询看看有没有新消息。</p>
+<p>长轮询是一项在这些脚本里降低服务器加载的有趣的技术。如果轮询的时候服务器没有新消息，他就简单的不发回响应。并且，如果客户端接收到的消息是超时的，服务器会找到突出的请求并且返回一个响应。</p>
+</blockquote>
+<p>小结</p>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">vue 前端</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">HTTP</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://kwm42.github.io/2019/09/08/译-当你输入url的时候到底发生了什么/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
   
   
-    </div></section>
+    <a href="/2019/08/09/cors/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">cors</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+  
+  
   
 
-    
+  
+
+  
+
+  
 
 
           </div>
@@ -222,8 +447,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,
