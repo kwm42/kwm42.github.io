@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>webpack插件 | KWM&#39;s BLOG</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="author" content="kwm">
+  <meta name="keywords" content>
+  <meta name="description" content>
+  <script id="hexo-configurations">
+  var CONFIG = {
+    root: '/',
+    theme: 'lx',
+    version: '1.4.5',
+    localsearch:{
+      "enable": false,
+      "trigger": "auto",
+      "top_n_per_article": 1,
+      "unescape": false,
+      "preload": false
+      },
+    path: '-'
+  };
+</script>
+
+  <link rel="shortcut icon" href="/favicon.ico">
+  <link rel="stylesheet" href="/css/main.css">
+  <script src="/js/jquery.min.js"></script>
+  <script src="/js/jquery.jside.menu.js"></script>
+	<script>
+	$(document).ready(function(){
+	$(".menu-container").jSideMenu({
+	    jSidePosition: "position-right",
+	    jSideSticky: true,
+	    jSideSkin: "endless-river",
+	     });
+	}); 
+	</script>
+  
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:300|Noto+Serif+SC&amp;display=swap">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/font-awesome@4/css/font-awesome.min.css">
+</head>
+<body>
+<div class="single">
+<div id="page">
+<div id="lx-aside" style="background-image: url(/images/page-cover.jpg)" data-stellar-background-ratio="0.5">
+  <div class="overlay">
+  <div class="page-title">
+    <div class="avatar"><a href="/"><img src="/images/person_1.jpg"></a></div>
+    <span>2019-10-14</span>
+    <h2>webpack插件</h2>
+    <div class="tags"><i class="fa fa-tag"></i><a class="tag-link" href="/tags/webpack/">webpack</a></div>
+    </div>
+</div>
+</div>
+<div id="lx-main-content">
+  <div class="lx-post">
+    <div class="lx-entry padding">
+      <div>
+        <h2 id="我的第一个-webpack-插件"><a href="#我的第一个-webpack-插件" class="headerlink" title="我的第一个 webpack 插件"></a>我的第一个 webpack 插件</h2><a id="more"></a>
+<p>我的第一个 webpack 插件</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> &#123; NO_BUG &#125; = <span class="built_in">require</span>(<span class="string">'./NO_BUG'</span>);</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">NobugCommentWebpackPlugin</span> </span>&#123;</span><br><span class="line">  <span class="keyword">constructor</span>(options) &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(options);</span><br><span class="line">    <span class="keyword">this</span>.options = options;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  apply(compiler) &#123;</span><br><span class="line">    compiler.hooks.emit.tap(</span><br><span class="line">      <span class="string">'NobugCommentWebpackPlugin'</span>,</span><br><span class="line">      (compilation) =&gt; &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">let</span> key <span class="keyword">in</span> compilation.assets) &#123;</span><br><span class="line">          <span class="keyword">let</span> newSource = NO_BUG + compilation.assets[key].source();</span><br><span class="line">          compilation.assets[key] = &#123;</span><br><span class="line">            source: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">              <span class="keyword">return</span> newSource</span><br><span class="line">            &#125;,</span><br><span class="line">            size: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">              <span class="keyword">return</span> newSource.length</span><br><span class="line">            &#125;</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">'in emit options =&gt; '</span>, <span class="keyword">this</span>.options);</span><br><span class="line">      &#125;</span><br><span class="line">    )</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = NobugCommentWebpackPlugin;</span><br></pre></td></tr></table></figure>
+<p>本着学习 webpack 的想法，开始看官方文档，看了老半天，对部分配置文件比较熟悉了，就想着诶插件是怎么一回事呢，我能不能也写一个插件，这样也会对 webpack 理解比较更好一些，于是这个名为「NobugCommentWebpackPlugin」的插件就出现了。</p>
+<p>首先说说他能干嘛？</p>
+<p><del>他能让你的程序没有 bug ！！！</del></p>
+<p>他能让你的程序看起来没有 bug：)</p>
+<p>大概意思是这样，一般来说你打包出来的文件长这样：</p>
+<p><strong>example_bundle.js</strong> (without using this plugin)</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/******/</span> (<span class="function"><span class="keyword">function</span>(<span class="params">modules</span>) </span>&#123; <span class="comment">// webpackBootstrap</span></span><br><span class="line"><span class="comment">/******/</span> 	<span class="comment">// The module cache</span></span><br><span class="line"><span class="comment">/******/</span> 	<span class="keyword">var</span> installedModules = &#123;&#125;;</span><br><span class="line"><span class="comment">/******/</span></span><br><span class="line"><span class="comment">/******/</span> 	<span class="comment">// The require function</span></span><br><span class="line"><span class="comment">/******/</span> 	<span class="function"><span class="keyword">function</span> <span class="title">__webpack_require__</span>(<span class="params">moduleId</span>) </span>&#123;</span><br><span class="line"><span class="comment">/******/</span></span><br><span class="line"><span class="comment">/******/</span>   <span class="comment">// something else......</span></span><br><span class="line"><span class="comment">/******/</span></span><br></pre></td></tr></table></figure>
+<p>然后你使用了这个插件之后呢，会变成这样：</p>
+<p><strong>example_bundle.js</strong> (using this plugin)</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> **************************************************************</span></span><br><span class="line"><span class="comment"> *                                                            *</span></span><br><span class="line"><span class="comment"> *   .=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-.       *</span></span><br><span class="line"><span class="comment"> *    |                     ______                     |      *</span></span><br><span class="line"><span class="comment"> *    |                  .-"      "-.                  |      *</span></span><br><span class="line"><span class="comment"> *    |                 /                             |      *</span></span><br><span class="line"><span class="comment"> *    |     _          |              |          _     |      *</span></span><br><span class="line"><span class="comment"> *    |    (          |,  .-.  .-.  ,|         / )    |      *</span></span><br><span class="line"><span class="comment"> *    |     &gt; "=._     | )(__/  __)( |     _.=" &lt;     |      *</span></span><br><span class="line"><span class="comment"> *    |    (_/"=._"=._ |/     /     | _.="_.="_)    |      *</span></span><br><span class="line"><span class="comment"> *    |           "=._"(_     ^^     _)"_.="           |      *</span></span><br><span class="line"><span class="comment"> *    |               "=__|IIIIII|__/="               |      *</span></span><br><span class="line"><span class="comment"> *    |              _.="| IIIIII/ |"=._              |      *</span></span><br><span class="line"><span class="comment"> *    |    _     _.="_.="          /"=._"=._     _    |      *</span></span><br><span class="line"><span class="comment"> *    |   ( _.="_.="      --------     "=._"=._/ )   |      *</span></span><br><span class="line"><span class="comment"> *    |    &gt; _.="                            "=._ &lt;    |      *</span></span><br><span class="line"><span class="comment"> *    |   (_/                                    _)   |      *</span></span><br><span class="line"><span class="comment"> *    |                                                |      *</span></span><br><span class="line"><span class="comment"> *    '-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-='      *</span></span><br><span class="line"><span class="comment"> *                                                            *</span></span><br><span class="line"><span class="comment"> *           LASCIATE OGNI SPERANZA, VOI CH'ENTRATE           *</span></span><br><span class="line"><span class="comment"> **************************************************************</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="comment">/******/</span> (<span class="function"><span class="keyword">function</span>(<span class="params">modules</span>) </span>&#123; <span class="comment">// webpackBootstrap</span></span><br><span class="line"><span class="comment">/******/</span> 	<span class="comment">// The module cache</span></span><br><span class="line"><span class="comment">/******/</span> 	<span class="keyword">var</span> installedModules = &#123;&#125;;</span><br><span class="line"><span class="comment">/******/</span></span><br><span class="line"><span class="comment">/******/</span> 	<span class="comment">// The require function</span></span><br><span class="line"><span class="comment">/******/</span> 	<span class="function"><span class="keyword">function</span> <span class="title">__webpack_require__</span>(<span class="params">moduleId</span>) </span>&#123;</span><br><span class="line"><span class="comment">/******/</span></span><br><span class="line"><span class="comment">/******/</span>   <span class="comment">// something else......</span></span><br><span class="line"><span class="comment">/******/</span></span><br></pre></td></tr></table></figure>
+<p>相信各位已经看出来了，他会在你打包出来的每个文件开始加上「保佑你的代码没有 bug 之类的」的注释，而且这个图案是可以选择的。</p>
+<p>那么有人可能会问：加个注释有什么用？</p>
+<p>Answer is : 没什么用，just for fun</p>
+<p>关于怎么写一个 webpack 插件可以直接看 <a href="https://webpack.js.org/contribute/writing-a-plugin/" target="_blank" rel="noopener">webpack 文档</a></p>
+<p>那么思路是什么呢，我们知道 webpack 打包会有很多过程，那么为了达到如上的效果应该怎么做呢？首先我们是给打包后的文件加注释的，所以应该在编译完成后，生成目标文件之前这个时间点来做，所以是 <strong>emit</strong> 周期的时候，文档的解释是这样的</p>
+<blockquote>
+<h3 id="emit"><a href="#emit" class="headerlink" title="emit"></a><code>emit</code></h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; AsyncSeriesHook</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<blockquote>
+<p>Executed right before emitting assets to output dir.</p>
+<ul>
+<li>Callback Parameters: <code>compilation</code></li>
+</ul>
+</blockquote>
+<p>就是说在把资源写入到输出目录之前发生的事件，回调参数是 compilation。</p>
+<p>这时候刚好能拿到编译后的资源，而且还没有写入文件，只要在这时候对他添油加醋一番就搞定了，代码如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// emit 周期触发的钩子</span></span><br><span class="line">compiler.hooks.emit.tap(</span><br><span class="line">    <span class="string">'NobugCommentWebpackPlugin'</span>,</span><br><span class="line">    (compilation) =&gt; &#123;</span><br><span class="line">       	<span class="comment">// 对于每个资源，在前面加上 NO_BUG，「NO_BUG」是一个常量，也就是那一段注释文本</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">let</span> key <span class="keyword">in</span> compilation.assets) &#123;</span><br><span class="line">            <span class="keyword">let</span> newSource = NO_BUG + compilation.assets[key].source();</span><br><span class="line">            <span class="comment">// 设置一下新的输出内容</span></span><br><span class="line">            compilation.assets[key] = &#123;</span><br><span class="line">                source: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">                    <span class="keyword">return</span> newSource</span><br><span class="line">                &#125;,</span><br><span class="line">                size: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">                    <span class="keyword">return</span> newSource.length</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>that’s all，就这样，没什么技术含量，纯BB</p>
+
+      </div>
+    </div>
+  </div>
+</div>
+<div class="lx-navigation">
+	<div class="lx-cover prev lx-cover-sm" style="background-image: url(/images/footer_1.jpg)">
+		<div class="overlay"></div>
+		<a class="copy" href="#">
+			<div class="display-t">
+				<div class="display-tc">
+					<div>
+						<span>Next</span>
+						<h3>没有更新的文章</h3>
+					</div>
+				</div>
+			</div>
+		</a>
+	</div>
+        <div class="lx-cover next lx-cover-sm" style="background-image: url(/images/footer_2.jpg)">
+		<div class="overlay"></div>
+		<a class="copy" href="/2019/09/08/译-当你输入url的时候到底发生了什么/">
+			<div class="display-t">
+				<div class="display-tc">
+					<div>
+						<span>Prev</span>
+						<h3>‘[译]当你输入url的时候到底发生了什么’</h3>
+					</div>
+				</div>
+			</div>
+		</a>
+	</div>
+</div>
+</div>
+
+<footer>
+  <div>
+  Copyright &copy; 2019.<a href="/">KWM's BLOG</a><br>Powered by <a href="https://hexo.io" target="_blank">Hexo</a> | Theme <a href="https://lx.blleng.cn" target="_blank">Lx</a><br>
+  </div>
+</footer>
+</div>
+
+<button class="menu-trigger"></button>
+<div class="menu">
+  <div class="menu-head">
+    <span class="layer">
+      <div class="col">
+        <div class="row for-pic">
+          <div class="profile-pic">
+            <a href="/"><img src="/images/person_1.jpg" alt="kwm"></a>
+          </div>
+        </div>
+        <div class="row for-name">
+          <p>kwm</p>
+          <span class="tagline">Hello, World!</span>
+        </div>
+      </div>
+    </span>
+  </div>
+  <nav class="menu-container">
+  <ul class="menu-items">
+    <li><a href="/"><i class="fa fa-home fa-fw"></i>首页</a></li>
+    <li><a href="/archives/"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+    <li class="has-sub"><span class="dropdown-heading">
+      <i class="fa fa-bookmark fa-fw"></i>页面</span>
+        <ul>
+          <li><a href="/guestbook">留言</a></li>
+        <li><a href="/about">关于</a></li>
+        </ul>
+    </li>
+    <li class="has-sub"><span class="dropdown-heading">
+      <i class="fa fa-link fa-fw"></i>友链</span>
+        <ul>
+          <li> <a href="https://lx.blleng.cn" target="_blank">Theme-Lx</a></li>
+        </ul>
+    </li>
+  </ul>
+  </nav>
+</div>
+
+<div class="gototop js-top">
+  <a href="#" class="js-gotop"><i class="fa fa-arrow-up"></i></a>
+</div>
+<script src="/js/jquery.easing.min.js"></script>
+<script src="/js/jquery.waypoints.min.js"></script>
+<script src="/js/jquery.stellar.min.js"></script>
+<script src="/js/main.js"></script>
+
+
+</body>
+</html>
