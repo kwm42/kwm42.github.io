@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>JavaScript如何工作 | KWM&#39;s BLOG</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="author" content="kwm">
+  <meta name="keywords" content>
+  <meta name="description" content>
+  <script id="hexo-configurations">
+  var CONFIG = {
+    root: '/',
+    theme: 'lx',
+    version: '1.4.5',
+    localsearch:{
+      "enable": false,
+      "trigger": "auto",
+      "top_n_per_article": 1,
+      "unescape": false,
+      "preload": false
+      },
+    path: '-'
+  };
+</script>
+
+  <link rel="shortcut icon" href="/favicon.ico">
+  <link rel="stylesheet" href="/css/main.css">
+  <script src="/js/jquery.min.js"></script>
+  <script src="/js/jquery.jside.menu.js"></script>
+	<script>
+	$(document).ready(function(){
+	$(".menu-container").jSideMenu({
+	    jSidePosition: "position-right",
+	    jSideSticky: true,
+	    jSideSkin: "endless-river",
+	     });
+	}); 
+	</script>
+  
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:300|Noto+Serif+SC&amp;display=swap">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/font-awesome@4/css/font-awesome.min.css">
+</head>
+<body>
+<div class="single">
+<div id="page">
+<div id="lx-aside" style="background-image: url(/images/page-cover.jpg)" data-stellar-background-ratio="0.5">
+  <div class="overlay">
+  <div class="page-title">
+    <div class="avatar"><a href="/"><img src="/images/person_1.jpg"></a></div>
+    <span>2019-10-25</span>
+    <h2>JavaScript如何工作</h2>
+    <div class="tags"><i class="fa fa-tag"></i><a class="tag-link" href="/tags/translation-JavaScript/">translation JavaScript</a></div>
+    </div>
+</div>
+</div>
+<div id="lx-main-content">
+  <div class="lx-post">
+    <div class="lx-entry padding">
+      <div>
+        <h1 id="Javascript-如何工作"><a href="#Javascript-如何工作" class="headerlink" title="Javascript 如何工作"></a>Javascript 如何工作</h1><p>JavaScript 变得越来越流行，团队正在借助它支持多种不同的技术栈 – 前端，后端，混合 app，嵌入式设备以及其他更多的方面。</p>
+<p>这篇文章旨在第一个系列的挖掘 JavaScript 以及它如何工作：我们认为通过理解 JavaScript 的组成部分和他们是如何一起协作的，你将会写出更好的代码和应用，我们还会分享我们构建 <a href="https://www.sessionstack.com/?utm_source=medium&amp;utm_medium=source&amp;utm_content=javascript-series-post1-intro" target="_blank" rel="noopener">SessionStack</a> 时的一些经验，一个轻量级的 JavaScript 应用应该是健壮并且高性能的以保持竞争力。</p>
+<p>正如 <a href="http://githut.info/" target="_blank" rel="noopener">GitHut stats</a> 所示，JavaScript 在开源的仓库以及全部提交的数量上处于顶尖的位置，在其他的类别中也没有落后很多。</p>
+<p><img src="https://miro.medium.com/max/1670/1*Zf4reZZJ9DCKsXf5CSXghg.png" alt="img"></p>
+<p><a href="https://madnight.github.io/githut/" target="_blank" rel="noopener">查看 GitHub 各种语言的状态</a></p>
+<p>如果一个项目过于依赖 JavaScript， 这就意味着为了开发出令人惊艳的应用，开发者必须有十分深刻的理解来利用语言以及生态系统所提供的的东西。</p>
+<p>事实证明，很多开发者日常都在使用 JavaScript 但是不理解他实际上是怎么运作的。</p>
+<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>几乎所有人都听说过 V8 引擎这个概念，并且大多数人知道 JavaScript 是单线程的并且使用了回调队列。</p>
+<p>在这篇文章里，我们将会详细介绍所有概念并且解释 JavaScript 实际上是怎么运行的。通过了解这些细节，你将可以借助提供的 APIs 写出更好的，不阻塞的 APP。</p>
+<p>如果你刚刚接触 JavaScript，这篇文章将会帮助你理解和其他语言相比，JavaScript 为什么这么怪。</p>
+<p>如果你是一名有经验的 JavaScript 开发者，希望这篇文章能在 JavaScript 是怎么运行的方面带给你一些新的见解。</p>
+<h2 id="JavaScript-引擎"><a href="#JavaScript-引擎" class="headerlink" title="JavaScript 引擎"></a>JavaScript 引擎</h2><p>一个很流行的 JavaScript 引擎是 Google V8 引擎，举个栗子，在 Chrome 和 Node.js 中都用到了 V8 引擎，</p>
+<p>这有一张简单的图来展示它看起来是什么样的</p>
+<p><img src="https://miro.medium.com/max/1126/1*OnH_DlbNAPvB9KLxUCyMsA.png" alt="img"></p>
+<p>V8 引擎由两个部分组成，</p>
+<ul>
+<li>内存堆区 - 这是内存分配发生的地方</li>
+<li>调用栈 - 这是你的代码执行的时候的栈帧</li>
+</ul>
+<h2 id="运行时"><a href="#运行时" class="headerlink" title="运行时"></a>运行时</h2><p>有些浏览器的 API 几乎所有的 JavaScript 开发者都用过 (例如 setTimeout)，但是这并不是 JS 引擎提供的。</p>
+<p>那么他们是哪里来的呢？</p>
+<p>事实证明，现实情况有些复杂。</p>
+<p><img src="https://miro.medium.com/max/1126/1*4lHHyfEhVB0LnQ3HlhSs8g.png" alt="img"></p>
+<p>所有，除了引擎还有更多其他的东西，我们有浏览器提供的叫做 Web API 的东西，像 DOM，AJAX，setTimeout 和其他的。</p>
+<p>然后还有大家都知道的 <strong>事件循环</strong> 和 <strong>事件队列（回调队列）</strong></p>
+<h2 id="调用栈"><a href="#调用栈" class="headerlink" title="调用栈"></a>调用栈</h2><p>JavaScript 是一个单线程的程序语言，这意味着他只有一个调用栈，因此他一个时刻只能做一件事情。调用栈是一个记录了我们现在程序运行到哪里的数据结构。如果我们进入一个函数，我们就把他放在栈的顶部，如果我们从一个函数返回，我们就把它从栈上弹出，这就是栈所能做的。</p>
+<p>来看一个例子，看看下面的代码：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">multiply</span>(<span class="params">x, y</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> x * y;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">printSquare</span>(<span class="params">x</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> s = multiply(x, x);</span><br><span class="line">    <span class="built_in">console</span>.log(s);</span><br><span class="line">&#125;</span><br><span class="line">printSquare(<span class="number">5</span>);</span><br></pre></td></tr></table></figure>
+<p>当引擎开始执行代码的时候，调用栈是空的，然后步骤如下所示：</p>
+<p>在调用栈里的每个条目叫做栈帧。</p>
+<p>并且实际上这也是当异常发生的时候栈是如何被构造的 - 这是异常发生的时候调用栈的状态，看看下面的代码：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">'SessionStack will help you resolve crashes :)'</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">bar</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    foo();</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">start</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    bar();</span><br><span class="line">&#125;</span><br><span class="line">start();</span><br></pre></td></tr></table></figure>
+<p>如果他是在 Chrome 里面调用的（假设这个代码是一个叫做 foo.js 的文件），将生成以下堆栈记录：</p>
+<p><img src="https://miro.medium.com/max/1126/1*Yp1KOt_UJ47HChmS9y7KXw.png" alt="img"></p>
+<p>同时，调用栈里的函数调用数量溢出调用栈的实际大小，然后浏览器决定抛出一个错误，就像下面这个一样：</p>
+<p><img src="https://miro.medium.com/max/386/1*e0nEd59RPKz9coyY8FX-uw.png" alt="img"></p>
+<p>在同样的线程里运行代码是很容易的，你不需要处理多线程情况下的复杂场景 - 例如死锁。</p>
+<h2 id="并发和事件循环"><a href="#并发和事件循环" class="headerlink" title="并发和事件循环"></a>并发和事件循环</h2><p>当你的调用栈里有很大数量的函数调用需要处理的时候回发生什么？例如，想象一下你要在浏览器里用 JavaScript 对复杂的图像做转换。</p>
+<p>你可能会问 - 这为什么会是个问题呢？问题是当调用栈里有函数执行的时候，浏览器不能做其他的事情 - 会被阻塞。这意味着浏览器不能渲染，不能运行其他代码，他被卡住了。如果你想要在你的应用上有漂亮流畅的 UI 的话这会是个问题。</p>
+<p>并且这不是唯一的问题，一旦你的浏览器开始执行调用栈里这么多的任务，他可能会停止响应一段相当长的时间，并且许多浏览器的行为是抛一个错误，询问你是否要关闭页面。</p>
+<p><img src="https://miro.medium.com/max/462/1*WlMXK3rs_scqKTRV41au7g.jpeg" alt="img"></p>
+<p>现在，这并不是最好的用户体验，不是吗？</p>
+<p>所以，我们执行复杂的代码时怎么能够不阻塞 UI 或者不让浏览器无响应呢？好的，方法是异步调用。</p>
+<p>这会在第二部分「How JavaScript actually work」详细介绍: <a href="https://blog.sessionstack.com/how-javascript-works-inside-the-v8-engine-5-tips-on-how-to-write-optimized-code-ac089e62b12e" target="_blank" rel="noopener">Inside the V8 engine + 5 tips on how to write optimized code(V8 引擎 + 5 个怎么写出优化的代码的提示)</a></p>
+<p>/<strong> ad below </strong>/</p>
+<p>同时，如果你在重现和理解你的 JavaScript 应用的时候有困难，看一看 <a href="https://www.sessionstack.com/?utm_source=medium&amp;utm_medium=blog&amp;utm_content=Post-1-overview-outro" target="_blank" rel="noopener">SessionStack</a> .SessionStack 记录了你的 Web APP 里的所有东西：所有 DOM 改变，用户交互，JavaScript 异常，堆栈信息，失败的网络请求，以及 debug 信息。</p>
+<p>通过 SessionStack，你可以用视频看到并且重现你的用户到底做了什么。</p>
+
+      </div>
+    </div>
+  </div>
+</div>
+<div class="lx-navigation">
+	<div class="lx-cover prev lx-cover-sm" style="background-image: url(/images/footer_1.jpg)">
+		<div class="overlay"></div>
+		<a class="copy" href="#">
+			<div class="display-t">
+				<div class="display-tc">
+					<div>
+						<span>Next</span>
+						<h3>没有更新的文章</h3>
+					</div>
+				</div>
+			</div>
+		</a>
+	</div>
+        <div class="lx-cover next lx-cover-sm" style="background-image: url(/images/footer_2.jpg)">
+		<div class="overlay"></div>
+		<a class="copy" href="/2019/10/14/webpack插件/">
+			<div class="display-t">
+				<div class="display-tc">
+					<div>
+						<span>Prev</span>
+						<h3>webpack插件</h3>
+					</div>
+				</div>
+			</div>
+		</a>
+	</div>
+</div>
+</div>
+
+<footer>
+  <div>
+  Copyright &copy; 2019.<a href="/">KWM's BLOG</a><br>Powered by <a href="https://hexo.io" target="_blank">Hexo</a> | Theme <a href="https://lx.blleng.cn" target="_blank">Lx</a><br>
+  </div>
+</footer>
+</div>
+
+<button class="menu-trigger"></button>
+<div class="menu">
+  <div class="menu-head">
+    <span class="layer">
+      <div class="col">
+        <div class="row for-pic">
+          <div class="profile-pic">
+            <a href="/"><img src="/images/person_1.jpg" alt="kwm"></a>
+          </div>
+        </div>
+        <div class="row for-name">
+          <p>kwm</p>
+          <span class="tagline">Hello, World!</span>
+        </div>
+      </div>
+    </span>
+  </div>
+  <nav class="menu-container">
+  <ul class="menu-items">
+    <li><a href="/"><i class="fa fa-home fa-fw"></i>首页</a></li>
+    <li><a href="/archives/"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+    <li class="has-sub"><span class="dropdown-heading">
+      <i class="fa fa-bookmark fa-fw"></i>页面</span>
+        <ul>
+          <li><a href="/guestbook">留言</a></li>
+        <li><a href="/about">关于</a></li>
+        </ul>
+    </li>
+    <li class="has-sub"><span class="dropdown-heading">
+      <i class="fa fa-link fa-fw"></i>友链</span>
+        <ul>
+          <li> <a href="https://lx.blleng.cn" target="_blank">Theme-Lx</a></li>
+        </ul>
+    </li>
+  </ul>
+  </nav>
+</div>
+
+<div class="gototop js-top">
+  <a href="#" class="js-gotop"><i class="fa fa-arrow-up"></i></a>
+</div>
+<script src="/js/jquery.easing.min.js"></script>
+<script src="/js/jquery.waypoints.min.js"></script>
+<script src="/js/jquery.stellar.min.js"></script>
+<script src="/js/main.js"></script>
+
+
+</body>
+</html>
